@@ -73,6 +73,9 @@ spec:
           {{- if (.Values.deployment.configMapMountPath) }}
             - mountPath: {{ .Values.deployment.configMapMountPath }}
               name: configmap
+              {{- if (.Values.deployment.configMapMountSubPath) }}
+              subPath: {{ .Values.deployment.configMapMountSubPath }}
+              {{- end }}
           {{- end }}
           {{- range $key, $value := .Values.deployment.extraVolumeMounts }}
             - mountPath: {{ $value.mountPath }}
