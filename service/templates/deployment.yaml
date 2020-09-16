@@ -56,6 +56,13 @@ spec:
                   name: {{ $value.name }}
             {{- end }}
             {{- end }}
+
+          args: [
+            {{- range $index, $arg := .Values.deployment.args }}
+            {{- if $index }},{{- end }}
+            {{ $arg | quote }}
+            {{- end }}
+          ]
           ports:
             - name: container-port
               containerPort: {{ .Values.deployment.containerPort }}
@@ -65,7 +72,7 @@ spec:
           {{- end }}
           {{- if (.Values.deployment.configMapMountPath) }}
             - mountPath: {{ .Values.deployment.configMapMountPath }}
-              name: caddy-config
+              name: configm
           {{- end }}
           {{- range $key, $value := .Values.deployment.extraVolumeMounts }}
             - mountPath: {{ $value.mountPath }}
@@ -89,7 +96,7 @@ spec:
       volumes:
         - configMap:
             name: {{ include "service.fullname" . }}-config
-          name: caddy-config
+          name: configmap
         {{- range $key, $value := .Values.service.extraVolumes }}
         - name: {{$key}}
           {{- tpl . $ | nindent 10 -}}

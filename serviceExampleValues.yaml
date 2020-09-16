@@ -69,6 +69,9 @@ service:
     prometheus.io/scrape: "true"
 
 deployment:
+  args:
+    - -test1
+    - -test2
   env:
     PEXIPAPIUSERNAME:
       type: secretKeyRef
@@ -90,6 +93,26 @@ deployment:
       value: "false"
     START_LICSTATCOLL:
       value: "false"
+
+extraConfigMapJson:
+  organization.json:
+    [
+      {
+        "organizationId": 10,
+        "organization":  "region-h",
+        "secretKeyLocation": "/key/key.txt"
+      },
+      {
+        "organizationId": 20,
+        "organization":  "region-sj",
+        "secretKeyLocation": "/key/key.txt"
+      },
+      {
+        "organizationId": "medcom",
+        "organization":  "medcom",
+        "secretKeyLocation": "/key/key.txt"
+      }
+    ]
 
 extraConfigMap:
   nginx.conf: |
