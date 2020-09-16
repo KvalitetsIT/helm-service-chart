@@ -96,7 +96,7 @@ pipeline {
 
                     }else{
                         container('helm') {
-                           dir('helm'){
+                           dir('service'){
                                 sh 'helm package service'
                            }
                         }
