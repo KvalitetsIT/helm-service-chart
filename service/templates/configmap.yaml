@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "service.fullname" . }}-config
+  namespace: {{ .Values.namespace | default "default" }}
+data:
+  {{- range $key, $value := .Values.extraConfigMapJson }}
+  {{$key}}: |
+    {{ . | toJson }}
+  {{- end }}
+
+

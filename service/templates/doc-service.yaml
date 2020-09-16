@@ -1,0 +1,22 @@
+{{- if .Values.docService.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "service.fullname" . }}-documentation
+  namespace: {{ .Values.namespace | default "default" }}
+  labels:
+    {{- include "documentation.labels" . | nindent 4 }}
+  {{- with .Values.docService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.docService.type }}
+  ports:
+    - port: {{ .Values.docService.port }}
+      targetPort: {{ .Values.docService.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "documentation.selectorLabels" . | nindent 4 }}
+{{- end -}}

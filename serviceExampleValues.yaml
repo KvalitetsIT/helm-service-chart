@@ -1,0 +1,92 @@
+fullnameOverride: vdx-pexip-status
+namespace: vdx
+
+replicaCount: 1
+deploymentStrategy: Recreate
+
+image:
+  repository: kvalitetsit/medcom-pexip-status-core
+  tag: "1.1.0"
+
+serviceAccount:
+  create: false
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: optional_no_ca
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: true
+    nginx.ingress.kubernetes.io/auth-url: http://testserviceaa:8787/
+    nginx.ingress.kubernetes.io/auth-snippet: |
+      proxy_set_header forwarded-from-nginx $ssl_client_escaped_cert;
+  hosts:
+    - host: pexip-sink.vdxapi.dk
+      paths:
+        - path: /history
+
+    - host: pexip-sink.vdxapi.dk
+      paths:
+        - path: /test
+          servicePort: 123
+        - path: /test2
+
+  tls:
+    - hosts:
+        - vdxapi.dk
+      secretName: star.vdxapi.dk
+
+extraIngress:
+  internalOnly:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      ingress.kubernetes.io/whitelist-source-range: "1.1.1.1/24"
+    hosts:
+      - host: booking.vconf-stage.dk
+        paths:
+          - path: /
+            servicePort: 7070
+          - path: /getsessiondata
+            servicePort: 8080
+
+    tls:
+      - hosts:
+          - booking.vconf-stage.dk
+        secretName: booking.vconf-stage.dk
+
+service:
+  port: 8080
+  targetPort: proxy-port
+
+  extraPorts:
+    test:
+      port: 80
+      targetPort: 80
+
+  annotations:
+    prometheus.io/path: /manage/actuator/appmetrics
+    prometheus.io/port: "8081"
+    prometheus.io/scrape: "true"
+
+deployment:
+  env:
+    PEXIPAPIUSERNAME:
+      type: secretKeyRef
+      name: pexip-api
+      key: username
+    PEXIPAPIPASSWORD:
+      type: secretKeyRef
+      name: pexip-api
+      key: password
+    SQLUSER:
+      type: secretKeyRef
+      name: statisticsdb
+      key: username
+    SQLPASS:
+      type: secretKeyRef
+      name: statisticsdb
+      key: password
+    START_CONFSYSCOLL:
+      value: "false"
+    START_LICSTATCOLL:
+      value: "false"

@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Values.namespace | default "default" }}
+  labels:
+    {{- include "service.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+    {{- end }}
+  {{- if (.Values.deploymentStrategy) }}
+  strategy:
+    type: {{ .Values.deploymentStrategy }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "service.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "service.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      {{- if .Values.deployment.enabled }}
+        - name: {{ include "service.fullname" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env: {{ if (not .Values.deployment.env) }}[]{{ end }}
+
+            {{- range $key, $value := .Values.deployment.env }}
+            - name: {{ $key }}
+            {{- if (not $value.type) }}
+              value: {{ $value.value | quote }}
+            {{- else if eq $value.type "fieldPath" }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: {{ $value.value }}
+            {{- else if eq $value.type "secretKeyRef" }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ $value.key }}
+                  name: {{ $value.name }}
+            {{- end }}
+            {{- end }}
+          ports:
+            - name: container-port
+              containerPort: {{ .Values.deployment.containerPort }}
+
+          {{- if or (.Values.deployment.configMapMountPath) (.Values.deployment.extraVolumeMounts) }}
+          volumeMounts:
+          {{- end }}
+          {{- if (.Values.deployment.configMapMountPath) }}
+            - mountPath: {{ .Values.deployment.configMapMountPath }}
+              name: caddy-config
+          {{- end }}
+          {{- range $key, $value := .Values.deployment.extraVolumeMounts }}
+            - mountPath: {{ $value.mountPath }}
+              name: {{ $key }}
+          {{- end }}
+
+          {{- if (.Values.deployment.livenessProbe) }}
+          livenessProbe:
+            {{- toYaml .Values.deployment.livenessProbe | nindent 12 }}
+          {{- end }}
+
+          {{- if (.Values.deployment.readinessProbe) }}
+          readinessProbe:
+            {{- toYaml .Values.deployment.readinessProbe | nindent 12 }}
+          {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- end }}
+
+      volumes:
+        - configMap:
+            name: {{ include "service.fullname" . }}-config
+          name: caddy-config
+        {{- range $key, $value := .Values.service.extraVolumes }}
+        - name: {{$key}}
+          {{- tpl . $ | nindent 10 -}}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
