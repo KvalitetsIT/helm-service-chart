@@ -90,3 +90,28 @@ deployment:
       value: "false"
     START_LICSTATCOLL:
       value: "false"
+
+extraConfigMap:
+  nginx.conf: |
+    events {}
+    http {
+
+    # Upstream servers
+    upstream pexip_vdx {
+
+        ip_hash;
+
+        server 185.29.78.131:443 weight=1 max_fails=0;
+
+        server 185.29.78.132:443 weight=1 max_fails=0;
+
+        server 185.29.78.133:443 weight=1 max_fails=0;
+
+        server 185.29.78.134:443 weight=1 max_fails=0;
+
+        server 185.29.78.135:443 weight=1 max_fails=0;
+
+        server 185.29.78.136:443 weight=1 max_fails=0;
+
+        keepalive 1024;
+    }
