@@ -56,9 +56,7 @@ pipeline {
                     if (env.TAG_NAME != null && env.TAG_NAME.matches("^v[0-9]*\\.[0-9]*\\.[0-9]*")) {
 
                         container('helm') {
-                           dir('service'){
-                                sh 'helm package service --app-version ' + env.TAG_NAME.substring(1) + ' --version ' + env.TAG_NAME.substring(1)
-                           }
+                            sh 'helm package service --app-version ' + env.TAG_NAME.substring(1) + ' --version ' + env.TAG_NAME.substring(1)
                         }
 
                         checkout([$class: 'GitSCM',
@@ -72,7 +70,7 @@ pipeline {
                             dir('helm-repo'){
                                 sh """
                                 mkdir -p ${WORKSPACE}/helm-repo/service/
-                                mv ${WORKSPACE}/helm/service-* ${WORKSPACE}/helm-repo/service/
+                                mv ${WORKSPACE}/service-* ${WORKSPACE}/helm-repo/service/
                                 helm repo index . --url https://raw.githubusercontent.com/KvalitetsIT/helm-repo/master/
                                 ls -l
                                 """
@@ -96,9 +94,7 @@ pipeline {
 
                     }else{
                         container('helm') {
-                           dir('service'){
-                                sh 'helm package service'
-                           }
+                            sh 'helm package service'
                         }
                     }
                 }
