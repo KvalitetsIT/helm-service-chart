@@ -42,13 +42,14 @@ SecretKeyRef |
 `deployment.env.{name}.name` | Name of the SecretKeyRef
 `deployment.env.{name}.key` | Key for the SecretKeyRef
 **Ingress** |
-`ingress.enabled` | Set to true to enable ingress | `true`
+`ingress.enabled` | Set to false to disable ingress | `false`
 `ingress.annotations` | Annotations for ingress | `kubernetes.io/ingress.class: nginx`
 `ingress.hosts` | Hosts served by the ingress | `- host: domain.dk`
 `ingress.tls` | TLS config 
 `extraIngress` | Map of extra ingress 
 `extraIngress.{name}` | Place ingress values under the name value
 **Service** |
+`service.enabled` | Set to false to disable service | `false`
 `service.port` | Port on the service | `8080`
 `service.targetPort` | Target port | `proxy-port`
 `service.annotations` | Annotations for service | `prometheus.io/path: /manage/actuator/appmetrics`
