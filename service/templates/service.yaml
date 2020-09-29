@@ -17,11 +17,18 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
       name: http
+      {{- if (.Values.service.nodePort)}}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
+
     {{- range $key, $value := .Values.service.extraPorts }}
     - port: {{ $value.port }}
       targetPort: {{ $value.targetPort }}
       protocol: {{ $value.protocol | default "TCP" }}
       name: {{ $key }}
+      {{- if ($value.nodePort) }}
+      nodePort: {{ $value.nodePort }}
+      {{- end }}
     {{- end }}
   selector:
     {{- include "service.selectorLabels" . | nindent 4 }}
