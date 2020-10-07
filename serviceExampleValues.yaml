@@ -69,8 +69,15 @@ service:
     prometheus.io/scrape: "true"
 
 deployment:
-  configMapMountPath: /config/nginx.conf
-  configMapMountSubPath: nginx.conf
+  configMapMountPaths:
+    nginx-conf:
+      configMapMountPath: /config/nginx.conf
+      configMapMountSubPath: nginx.conf
+    test2:
+      configMapMountPath: /config/test2.conf
+      configMapMountSubPath: test2.conf
+
+
   args:
     - -test1
     - -test2

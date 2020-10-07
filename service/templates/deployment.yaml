@@ -67,14 +67,14 @@ spec:
             - name: container-port
               containerPort: {{ .Values.deployment.containerPort }}
 
-          {{- if or (.Values.deployment.configMapMountPath) (.Values.deployment.extraVolumeMounts) }}
+          {{- if or (.Values.deployment.configMapMountPaths) (.Values.deployment.extraVolumeMounts) }}
           volumeMounts:
           {{- end }}
-          {{- if (.Values.deployment.configMapMountPath) }}
-            - mountPath: {{ .Values.deployment.configMapMountPath }}
+          {{- range $key, $value := .Values.deployment.configMapMountPaths }}
+            - mountPath: {{ $value.configMapMountPath }}
               name: configmap
-              {{- if (.Values.deployment.configMapMountSubPath) }}
-              subPath: {{ .Values.deployment.configMapMountSubPath }}
+              {{- if ($value.configMapMountSubPath) }}
+              subPath: {{ $value.configMapMountSubPath }}
               {{- end }}
           {{- end }}
           {{- range $key, $value := .Values.deployment.extraVolumeMounts }}
