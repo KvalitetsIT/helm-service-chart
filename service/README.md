@@ -41,6 +41,12 @@ Parameter | Description | Example
 SecretKeyRef |  
 `deployment.env.{name}.name` | Name of the SecretKeyRef
 `deployment.env.{name}.key` | Key for the SecretKeyRef
+**initContainers** |
+`initContainers.<name>.image.repository` | image repo
+`initContainers.<name>.image.tag` | image tag
+`initContainers.<name>.env` | See: Deployment - Environment variables
+`initContainers.<name>.configMapMountPaths` | Set value if config map needs to mount on init container
+`initContainers.<name>.extraVolumeMounts` | Extra volume mounts 
 **Ingress** |
 `ingress.enabled` | Set to false to disable ingress | `false`
 `ingress.annotations` | Annotations for ingress | `kubernetes.io/ingress.class: nginx`

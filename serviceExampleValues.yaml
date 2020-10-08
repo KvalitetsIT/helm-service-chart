@@ -69,6 +69,13 @@ service:
     prometheus.io/scrape: "true"
 
 deployment:
+  extraVolumes:
+    myEmptyDir: |
+      emtpyDir: {}
+  extraVolumeMounts:
+    myEmptyDir:
+      mountPath: /dir
+
   configMapMountPaths:
     nginx-conf:
       configMapMountPath: /config/nginx.conf
@@ -102,6 +109,26 @@ deployment:
       value: "false"
     START_LICSTATCOLL:
       value: "false"
+
+initContainers:
+  test:
+    image:
+      repository: kvalitetsit/init
+      tag: "1.1.0"
+    env:
+      SQLPASS:
+        type: secretKeyRef
+        name: statisticsdb
+        key: password
+      START_CONFSYSCOLL:
+        value: "false"
+    configMapMountPaths:
+      nginx-conf:
+        configMapMountPath: /config/nginx.conf
+        configMapMountSubPath: nginx.conf
+    extraVolumeMounts:
+      myEmptyDir:
+        mountPath: /dir
 
 extraConfigMapJson:
   organization.json:

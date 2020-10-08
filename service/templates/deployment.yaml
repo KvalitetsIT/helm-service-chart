@@ -96,11 +96,49 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- end }}
 
+      {{- if (.Values.initContainers) }}
+      initContainers:
+      {{- end }}
+      {{- range $key, $value := .Values.initContainers }}
+        - name: {{ $key }}
+          image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
+          env: {{ if (not $value.env) }}[ ]{{ end }}
+            {{- range $key, $value := $value.env }}
+            - name: {{ $key }}
+            {{- if (not $value.type) }}
+              value: {{ $value.value | quote }}
+            {{- else if eq $value.type "fieldPath" }}
+              valueFrom:
+                fieldRef:
+                fieldPath: {{ $value.value }}
+            {{- else if eq $value.type "secretKeyRef" }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ $value.key }}
+                  name: {{ $value.name }}
+            {{- end }}
+            {{- end }}
+          {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
+          volumeMounts:
+          {{- end }}
+          {{- range $key, $value := $value.configMapMountPaths }}
+          - mountPath: {{ $value.configMapMountPath }}
+            name: configmap
+            {{- if ($value.configMapMountSubPath) }}
+            subPath: {{ $value.configMapMountSubPath }}
+            {{- end }}
+          {{- end }}
+          {{- range $key, $value := $value.extraVolumeMounts }}
+          - mountPath: {{ $value.mountPath }}
+            name: {{ $key }}
+          {{- end }}
+      {{- end }}
+
       volumes:
         - configMap:
             name: {{ include "service.fullname" . }}-config
           name: configmap
-        {{- range $key, $value := .Values.service.extraVolumes }}
+        {{- range $key, $value := .Values.deployment.extraVolumes }}
         - name: {{$key}}
           {{- tpl . $ | nindent 10 -}}
         {{- end }}
