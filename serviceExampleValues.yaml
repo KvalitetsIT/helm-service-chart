@@ -122,6 +122,14 @@ initContainers:
         key: password
       START_CONFSYSCOLL:
         value: "false"
+    args:
+      - -test1
+      - -test2
+    commands:
+      - wget
+      - "-0"
+      - "/work-dir/index.html"
+      - http://kubernetes.io
     configMapMountPaths:
       nginx-conf:
         configMapMountPath: /config/nginx.conf

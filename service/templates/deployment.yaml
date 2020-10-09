@@ -56,7 +56,12 @@ spec:
                   name: {{ $value.name }}
             {{- end }}
             {{- end }}
-
+          command: [
+            {{- range $index, $cmd := .Values.deployment.commands }}
+            {{- if $index }},{{- end }}
+            {{ $cmd | quote }}
+            {{- end }}
+          ]
           args: [
             {{- range $index, $arg := .Values.deployment.args }}
             {{- if $index }},{{- end }}
@@ -118,6 +123,18 @@ spec:
                   name: {{ $value.name }}
             {{- end }}
             {{- end }}
+          command: [
+            {{- range $index, $cmd := $value.commands }}
+            {{- if $index }},{{- end }}
+            {{ $cmd | quote }}
+            {{- end }}
+          ]
+          args: [
+            {{- range $index, $arg := $value.args }}
+            {{- if $index }},{{- end }}
+            {{ $arg | quote }}
+            {{- end }}
+          ]
           {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
           volumeMounts:
           {{- end }}
