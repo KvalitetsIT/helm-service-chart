@@ -110,6 +110,14 @@ deployment:
     START_LICSTATCOLL:
       value: "false"
 
+  hostAliases:
+    127.0.0.1:
+      - foo.local
+      - bar.local
+    10.1.2.3:
+      - foo.remote
+      - bar.remote
+
 initContainers:
   test:
     image:

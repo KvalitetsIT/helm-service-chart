@@ -33,6 +33,16 @@ spec:
       serviceAccountName: {{ include "service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if (.Values.deployment.hostAliases) }}
+      hostAliases:
+        {{- range $ip , $hostnames := .Values.deployment.hostAliases }}
+        - ip: {{ $ip }}
+          hostnames:
+          {{- range $hostnames }}
+            - {{ . }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
       containers:
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
