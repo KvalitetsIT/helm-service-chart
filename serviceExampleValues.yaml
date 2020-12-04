@@ -68,6 +68,17 @@ service:
     prometheus.io/port: "8081"
     prometheus.io/scrape: "true"
 
+sidecar:
+  name: nginx-prometheus-exporter
+  image:
+    repository: nginx/nginx-prometheus-exporter
+    tag: "0.8.0"
+  containerPort: 9113
+  commands:
+    - /user/bin/exporter
+    - -nginx.scrape-uri
+    - "localhost:8080/stats"
+
 deployment:
   extraVolumes:
     myEmptyDir: |

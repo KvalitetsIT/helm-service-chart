@@ -44,6 +44,26 @@ spec:
         {{- end }}
       {{- end }}
       containers:
+      {{- if (.Values.sidecar) }}
+        - name: {{ .Values.sidecar.name }}
+          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [
+            {{- range $index, $cmd := .Values.sidecar.commands }}
+            {{- if $index }},{{- end }}
+            {{ $cmd | quote }}
+            {{- end }}
+          ]
+          args: [
+            {{- range $index, $arg := .Values.sidecar.args }}
+            {{- if $index }},{{- end }}
+            {{ $arg | quote }}
+            {{- end }}
+          ]
+          ports:
+            - containerPort: {{ .Values.sidecar.containerPort }}
+              name: sidecar-port
+      {{- end }}
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
           securityContext:
