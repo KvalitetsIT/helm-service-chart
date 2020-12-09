@@ -170,16 +170,16 @@ spec:
           volumeMounts:
           {{- end }}
           {{- range $key, $value := $value.configMapMountPaths }}
-          - mountPath: {{ $value.configMapMountPath }}
-            name: configmap
-            {{- if ($value.configMapMountSubPath) }}
-            subPath: {{ $value.configMapMountSubPath }}
-            {{- end }}
+            - mountPath: {{ $value.configMapMountPath }}
+              name: configmap
+              {{- if ($value.configMapMountSubPath) }}
+              subPath: {{ $value.configMapMountSubPath }}
+              {{- end }}
           {{- end }}
           {{- range $key, $value := $value.extraVolumeMounts }}
-          - mountPath: {{ $value.mountPath }}
-            name: {{ $key }}
-          {{- end }}
+            - mountPath: {{ $value.mountPath }}
+              name: {{ $key }}
+              {{- end }}
       {{- end }}
 
       volumes:
