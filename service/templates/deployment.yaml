@@ -102,8 +102,12 @@ spec:
           ports:
             - name: container-port
               containerPort: {{ .Values.deployment.containerPort }}
+            {{- range $name, $port := .Values.deployment.extraContainerPort }}
+            - name: {{ $name }}
+              containerPort: {{ $port }}
+            {{- end }}
 
-          {{- if or (.Values.deployment.configMapMountPaths) (.Values.deployment.extraVolumeMounts) }}
+                {{- if or (.Values.deployment.configMapMountPaths) (.Values.deployment.extraVolumeMounts) }}
           volumeMounts:
           {{- end }}
           {{- range $key, $value := .Values.deployment.configMapMountPaths }}

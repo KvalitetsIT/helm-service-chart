@@ -95,6 +95,10 @@ deployment:
       configMapMountPath: /config/test2.conf
       configMapMountSubPath: test2.conf
 
+  extraContainerPort:
+    test1: 23
+    test2: 243
+
 
   args:
     - -test1

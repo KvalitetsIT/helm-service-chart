@@ -29,6 +29,7 @@ Parameter | Description | Example
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
 **Deployment** | 
 `deployment.containerPort` | Port on web-service | `8080` 
+`deployment.extraContainerPort` | Extra port on deployment| `Port1: 8051` 
 `deployment.configMapMountPath` | Set value if config map needs to mount on deployment | `/config`
 `deplyment.extraVolumeMounts` | Extra volume mounts 
 `deplyment.readinessProbe` | Set values under this to config readiness probe
