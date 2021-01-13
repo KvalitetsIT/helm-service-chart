@@ -48,6 +48,23 @@ spec:
         - name: {{ .Values.sidecar.name }}
           image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env: {{ if (not .Values.sidecar.env) }}[]{{ end }}
+
+            {{- range $key, $value := .Values.sidecar.env }}
+            - name: {{ $key }}
+            {{- if (not $value.type) }}
+              value: {{ $value.value | quote }}
+            {{- else if eq $value.type "fieldPath" }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: {{ $value.value }}
+            {{- else if eq $value.type "secretKeyRef" }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ $value.key }}
+                  name: {{ $value.name }}
+            {{- end }}
+            {{- end }}
           command: [
             {{- range $index, $cmd := .Values.sidecar.commands }}
             {{- if $index }},{{- end }}
