@@ -102,8 +102,22 @@ spec:
                 secretKeyRef:
                   key: {{ $value.key }}
                   name: {{ $value.name }}
+            {{- else if eq $value.type "configMapKeyRef" }}
+              valueFrom:
+                configMapKeyRef:
+                  key: {{ $value.key }}
+                  name: {{ $value.name }}
             {{- end }}
             {{- end }}
+          {{- if (.Values.deployment.envFrom) }}
+          {{- if (.Values.deployment.envFrom.configMapRef)}}
+          envFrom:
+          {{- range .Values.deployment.envFrom.configMapRef}}
+            - configMapRef:
+                name: {{ . }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
           command: [
             {{- range $index, $cmd := .Values.deployment.commands }}
             {{- if $index }},{{- end }}
