@@ -76,3 +76,20 @@ SecretKeyRef |
 `docService.port` | Port on the service | `8080`
 `docService.targetPort` | Target port | `proxy-port`
 `docService.annotations` | Annotations for service | `prometheus.io/path: /manage/actuator/appmetrics`
+**Cronjob** |
+`cronjob.{name}` | Name of the cronjob | 
+`cronjob.{name}.image` | Name of the cronjob image | 
+`cronjob.{name}.tag` | Cronjob image tag | 
+`cronjob.{name}.schedule` | Schedule for cronjob | `"*/15 * * * *"`
+`cronjob.env` | Map of environment variables
+`cronjob.env.{name}` | Name of the environment variables
+`cronjob.env.{name}.value` | Value of the environment variable
+`cronjob.env.{name}.type` | Type of the environment variables. 'fieldPath' or 'secretKeyRef'. If not set classic environment variable. | `secretKeyRef`
+SecretKeyRef |  
+`cronjob.env.{name}.name` | Name of the SecretKeyRef
+`cronjob.env.{name}.key` | Key for the SecretKeyRef
+`cronjob.commands` | List of cronjob commands | `- /bin/bash`
+`cronjob.args` | List of arguments to the commands | 
+`deployment.configMapMountPath` | Set value if config map needs to mount on deployment | `/config`
+`deplyment.extraVolumeMounts` | Extra volume mounts 
+`deplyment.extraVolumes` | Extra volumes
