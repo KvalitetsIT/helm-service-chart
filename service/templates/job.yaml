@@ -1,0 +1,91 @@
+---
+{{- range $name, $value := .Values.job}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.namespace | default "default" }}
+spec:
+  template:
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      containers:
+      - name: {{ $name }}
+        image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
+        imagePullPolicy: {{ $value.image.pullPolicy | default "IfNotPresent" }}
+        env: {{ if (not $value.env) }}[]{{ end }}
+
+        {{- range $envKey, $envValue := $value.env }}
+        - name: {{ $envKey }}
+          {{- if (not $envValue.type) }}
+          value: {{ $envValue.value | quote }}
+          {{- else if eq $envValue.type "fieldPath" }}
+          valueFrom:
+            fieldRef:
+              fieldPath: {{ $envValue.value }}
+          {{- else if eq $envValue.type "secretKeyRef" }}
+          valueFrom:
+            secretKeyRef:
+              key: {{ $envValue.key }}
+              name: {{ $envValue.name }}
+          {{- else if eq $envValue.type "configMapKeyRef" }}
+          valueFrom:
+            configMapKeyRef:
+              key: {{ $envValue.key }}
+              name: {{ $envValue.name }}
+          {{- end }}
+        {{- end }}
+        {{- if ($value.envFrom) }}
+        {{- if ($value.envFrom.configMapRef)}}
+        envFrom:
+        {{- range $value.envFrom.configMapRef}}
+        - configMapRef:
+            name: {{ . }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        command: [
+          {{- range $index, $cmd := $value.commands }}
+          {{- if $index }},{{- end }}
+          {{ $cmd | quote }}
+          {{- end }}
+        ]
+        args: [
+          {{- range $index, $arg := $value.args }}
+          {{- if $index }},{{- end }}
+          {{ $arg | quote }}
+          {{- end }}
+        ]
+        {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
+        volumeMounts:
+        {{- end }}
+        {{- range $key, $value := $value.configMapMountPaths }}
+        - mountPath: {{ $value.configMapMountPath }}
+          name: configmap
+          {{- if ($value.configMapMountSubPath) }}
+          subPath: {{ $value.configMapMountSubPath }}
+          {{- end }}
+        {{- end }}
+        {{- range $key, $value := $value.extraVolumeMounts }}
+        - mountPath: {{ $value.mountPath }}
+          name: {{ $key }}
+        {{- end }}
+      restartPolicy: {{ $value.restartPolicy | default "OnFailure" }}
+      {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
+      volumes:
+      - name: configmap
+        configMap:
+          name: {{ include "service.fullname" $ }}-config
+      {{- end }}
+      {{- range $key, $value := $value.extraVolumes }}
+      - name: {{$key}}
+        {{- tpl . $ | nindent 8 -}}
+      {{- end }}
+  {{- if ($value.backoffLimit) }}
+  backoffLimit: {{ $value.backoffLimit }}
+  {{- end }}
+---
+{{- end }}

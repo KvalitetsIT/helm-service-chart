@@ -15,22 +15,35 @@ spec:
           - name: {{ $name }}
             image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
             imagePullPolicy: {{ $value.image.pullPolicy | default "IfNotPresent" }}
-
             env: {{ if (not $value.env) }}[]{{ end }}
 
-            {{- range $key, $value := $value.env }}
-            - name: {{ $key }}
-            {{- if (not $value.type) }}
-              value: {{ $value.value | quote }}
-            {{- else if eq $value.type "fieldPath" }}
+            {{- range $envKey, $envValue := $value.env }}
+            - name: {{ $envKey }}
+              {{- if (not $envValue.type) }}
+              value: {{ $envValue.value | quote }}
+              {{- else if eq $envValue.type "fieldPath" }}
               valueFrom:
                 fieldRef:
-                  fieldPath: {{ $value.value }}
-            {{- else if eq $value.type "secretKeyRef" }}
+                  fieldPath: {{ $envValue.value }}
+              {{- else if eq $envValue.type "secretKeyRef" }}
               valueFrom:
                 secretKeyRef:
-                  key: {{ $value.key }}
-                  name: {{ $value.name }}
+                  key: {{ $envValue.key }}
+                  name: {{ $envValue.name }}
+              {{- else if eq $envValue.type "configMapKeyRef" }}
+              valueFrom:
+                configMapKeyRef:
+                  key: {{ $envValue.key }}
+                  name: {{ $envValue.name }}
+              {{- end }}
+            {{- end }}
+            {{- if ($value.envFrom) }}
+            {{- if ($value.envFrom.configMapRef)}}
+            envFrom:
+            {{- range $value.envFrom.configMapRef}}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
             {{- end }}
             {{- end }}
             command: [

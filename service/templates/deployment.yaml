@@ -89,32 +89,32 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env: {{ if (not .Values.deployment.env) }}[]{{ end }}
 
-            {{- range $key, $value := .Values.deployment.env }}
-            - name: {{ $key }}
+          {{- range $key, $value := .Values.deployment.env }}
+          - name: {{ $key }}
             {{- if (not $value.type) }}
-              value: {{ $value.value | quote }}
+            value: {{ $value.value | quote }}
             {{- else if eq $value.type "fieldPath" }}
-              valueFrom:
-                fieldRef:
-                  fieldPath: {{ $value.value }}
+            valueFrom:
+              fieldRef:
+                fieldPath: {{ $value.value }}
             {{- else if eq $value.type "secretKeyRef" }}
-              valueFrom:
-                secretKeyRef:
-                  key: {{ $value.key }}
-                  name: {{ $value.name }}
+            valueFrom:
+              secretKeyRef:
+                key: {{ $value.key }}
+                name: {{ $value.name }}
             {{- else if eq $value.type "configMapKeyRef" }}
-              valueFrom:
-                configMapKeyRef:
-                  key: {{ $value.key }}
-                  name: {{ $value.name }}
+            valueFrom:
+              configMapKeyRef:
+                key: {{ $value.key }}
+                name: {{ $value.name }}
             {{- end }}
-            {{- end }}
+          {{- end }}
           {{- if (.Values.deployment.envFrom) }}
           {{- if (.Values.deployment.envFrom.configMapRef)}}
           envFrom:
           {{- range .Values.deployment.envFrom.configMapRef}}
-            - configMapRef:
-                name: {{ . }}
+          - configMapRef:
+              name: {{ . }}
           {{- end }}
           {{- end }}
           {{- end }}
