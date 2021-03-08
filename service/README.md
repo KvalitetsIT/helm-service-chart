@@ -17,7 +17,7 @@ $ helm install web-service KvalitetsIT/service -f myValues.yaml --version 1.0.3
 ```
 
 ## Configuration
-The following table lists the configurable parameters of the KitCaddy and the web-service.
+The following table lists the configurable parameters.
 
 Parameter | Description | Example
 --- | --- | ---
