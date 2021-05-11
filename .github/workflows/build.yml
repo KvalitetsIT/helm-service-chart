@@ -37,7 +37,7 @@ jobs:
 
 
       - name: Build and test helm chart
-        run: ./build/build-helm.sh service 0.0.0
+        run: ./build/build-helm.sh service ${VERSION}
 
 #      - name: Update coverage badge
 #        if: ${{ steps.tag.conclusion == 'skipped' }}
