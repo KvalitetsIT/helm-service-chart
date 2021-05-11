@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p helm
-echo $pwd
+echo $(pwd)
 ls
 cd helm  
 git config user.name "Github Actions"
