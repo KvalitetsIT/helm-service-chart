@@ -39,6 +39,10 @@ jobs:
       - name: Build and test helm chart
         run: ./build/build-helm.sh service ${{ steps.tag.outputs.VERSION }} ${{ steps.trunk.outputs.VERSION }}
 
-      - name: Push tagged helmchat to repo
+      - name: Push tagged helm chart to repo
         if: ${{ steps.tag.conclusion != 'skipped' }}
+        run: ./build/push-repo.sh
+
+      - name: Push main helm chart to repo
+        if: ${{ steps.trunk.conclusion != 'skipped' }}
         run: ./build/push-repo.sh
