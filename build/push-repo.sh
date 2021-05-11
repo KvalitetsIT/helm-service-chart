@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "hej"
+
 mkdir -p helm
 cd helm  
 git config --global user.name "Github Actions"
