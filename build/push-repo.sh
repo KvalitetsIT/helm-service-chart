@@ -9,4 +9,4 @@ cd helm-repo
 cp ../../service-*.tgz service
 git add -A
 git commit -m "Adding new service chart"
-git push
+git push https://$1@github.com/KvalitetsIT/helm-repo
