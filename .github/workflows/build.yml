@@ -41,8 +41,8 @@ jobs:
 
       - name: Push tagged helm chart to repo
         if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./build/push-repo.sh
+        run: ./build/push-repo.sh ${{ secrets.KIT_GITHUB_ACCESS }}
 
       - name: Push main helm chart to repo
         if: ${{ steps.trunk.conclusion != 'skipped' }}
-        run: ./build/push-repo.sh
+        run: ./build/push-repo.sh ${{ secrets.KIT_GITHUB_ACCESS }}
