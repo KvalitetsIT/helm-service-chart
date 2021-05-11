@@ -39,10 +39,6 @@ jobs:
       - name: Build and test helm chart
         run: ./build/build-helm.sh service ${{ steps.tag.outputs.VERSION }} ${{ steps.trunk.outputs.VERSION }}
 
-#      - name: Update coverage badge
-#        if: ${{ steps.tag.conclusion == 'skipped' }}
-#        run: ./build/badge-update.sh
-
-      - name: Tag version service docker image
+      - name: Push tagged helmchat to repo
         if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./build/github-publish.sh service 0.0.0
+        run: ./build/push-repo.sh
