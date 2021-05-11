@@ -45,4 +45,4 @@ jobs:
 
       - name: Tag version service docker image
         if: ${{ steps.tag.conclusion != 'skipped' }}
-        run: ./build/github-publish.sh service ${{ steps.tag.outputs.VERSION }}
+        run: ./build/github-publish.sh service 0.0.0
