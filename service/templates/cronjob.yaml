@@ -7,6 +7,7 @@ metadata:
   namespace: {{ $.Values.namespace | default "default" }}
 spec:
   schedule: {{ required "Required value missing: 'schedule'" $value.schedule | quote }}
+  concurrencyPolicy: {{ $value.concurrencyPolicy | default "Forbid"}}
   jobTemplate:
     spec:
       template:
