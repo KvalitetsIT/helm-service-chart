@@ -78,7 +78,10 @@ sidecar:
     - /user/bin/exporter
     - -nginx.scrape-uri
     - "localhost:8080/stats"
-
+  extraVolumeMounts:
+    myEmptyDir:
+      mountPath: /dir
+      
 deployment:
   extraVolumes:
     myEmptyDir: |
