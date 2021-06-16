@@ -80,13 +80,6 @@ spec:
           ports:
             - containerPort: {{ .Values.sidecar.containerPort }}
               name: sidecar-port
-          {{- if (.Values.sidecar.extraVolumeMounts) }}
-          volumeMounts:
-          {{- range $key, $value := .Values.sidecar.extraVolumeMounts }}
-            - mountPath: {{ $value.mountPath }}
-              name: {{ $key }}
-          {{- end }}              
-          {{- end }}                        
       {{- end }}
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
