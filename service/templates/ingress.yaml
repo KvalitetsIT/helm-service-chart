@@ -79,8 +79,10 @@ spec:
           {{- range .paths }}
           - path: {{ .path }}
             backend:
-              serviceName: {{ .serviceName | default $fullName }}
-              servicePort: {{ .servicePort | default  $svcPort }}
+              service:
+                name: {{ .serviceName | default $fullName }}
+                port: 
+                  number: {{ .servicePort | default  $svcPort }}
           {{- end }}
     {{- end }}
   {{- end }}
