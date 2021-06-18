@@ -34,7 +34,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
-            pathType: prefix
+            pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-documentation
