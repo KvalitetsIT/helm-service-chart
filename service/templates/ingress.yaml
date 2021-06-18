@@ -34,6 +34,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
+            pathType: prefix
             backend:
               service:
                 name: {{ .serviceName | default $fullName }}
@@ -80,6 +81,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
+            pathType: prefix
             backend:
               service:
                 name: {{ .serviceName | default $fullName }}
