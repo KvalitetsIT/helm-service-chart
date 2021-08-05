@@ -103,6 +103,7 @@ Parameter | Description | Example
 `cronjob.{name}.image` | Name of the cronjob image | 
 `cronjob.{name}.tag` | Cronjob image tag | 
 `cronjob.{name}.schedule` | Schedule for cronjob | `"*/15 * * * *"`
+`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. One of Allow, Forbid, Replace. Defaults to Forbid
 `cronjob.{name}.commands` | List of cronjob commands | `- /bin/bash`
 `cronjob.{name}.args` | List of arguments to the commands | 
 `cronjob.{name}.restartPolicy` | Restartpolicy. One of Always, OnFailure, Never. Defaults to OnFailure
