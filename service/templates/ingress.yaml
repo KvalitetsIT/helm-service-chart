@@ -74,6 +74,7 @@ spec:
         {{- end }}
       secretName: {{ .secretName }}
     {{- end }}
+  {{- end }}
   rules:
     {{- range $values.hosts }}
     - host: {{ .host | quote }}
@@ -90,5 +91,4 @@ spec:
           {{- end }}
     {{- end }}
   {{- end }}
-{{- end }}
 {{- end }}

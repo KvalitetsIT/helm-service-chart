@@ -54,6 +54,17 @@ extraIngress:
           - booking.vconf-stage.dk
         secretName: booking.vconf-stage.dk
 
+  internalOnlyNoTls:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      ingress.kubernetes.io/whitelist-source-range: "1.1.1.1/24"
+    hosts:
+      - host: booking.vconf-stage.dk
+        paths:
+          - path: /
+            servicePort: 7070
+          - path: /getsessiondata
+            servicePort: 8080
 service:
   port: 8080
   targetPort: proxy-port
@@ -208,6 +219,9 @@ extraConfigMap:
 
         keepalive 1024;
     }
+
+docService:
+  enabled: false
 
 certificate:
   urlhandler.vconf-stage.dk:
