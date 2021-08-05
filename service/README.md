@@ -146,3 +146,8 @@ Parameter | Description | Example
 `job.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
 `job.{name}.extraVolumes` | Extra volumes for the mounts
 `job.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'job.{name}.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
+&nbsp; |
+**Sealed Secret** |
+`sealedSecret.{name}` | Name of secret |
+`sealedSecret.{name}.type` | Type of the secret - Default Opaque | `kubernetes.io/tls`
+`sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
