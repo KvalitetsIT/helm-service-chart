@@ -33,6 +33,42 @@ There are a few guides, but if it is still not what you're looking for, please d
 
 ## Adding Deployment
 
+```yaml
+deployment:
+  extraVolumes:
+    myEmptyDir: |
+      emtpyDir: {}
+  extraVolumeMounts:
+    myEmptyDir:
+      mountPath: /dir
+
+  configMapMountPaths:
+    nginx-conf:
+      configMapMountPath: /config/nginx.conf
+      configMapMountSubPath: nginx.conf
+
+  extraContainerPort:
+    test1: 23
+    test2: 243
+
+  args:
+    - -test1
+    - -test2
+  env:
+    PEXIPAPIUSERNAME:
+      type: secretKeyRef
+      name: pexip-api
+      key: username
+
+  hostAliases:
+    127.0.0.1:
+      - foo.local
+      - bar.local
+    10.1.2.3:
+      - foo.remote
+      - bar.remote
+```
+
 ## Adding initcontainer
 Parameter | Description | Example
 --- | --- | ---
@@ -217,6 +253,25 @@ Now our storageclass will take care, and provision volumes for the `storage`-vol
 ## Adding job
 
 ## Adding sealed secret
+Parameter | Description | Example
+--- | --- | ---
+**Sealed Secret** |
+`sealedSecret.{name}` | Name of secret |
+`sealedSecret.{name}.type` | Type of the secret - Default Opaque | `kubernetes.io/tls`
+`sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
+
+> see full configuration [here]( #Configuration)
+
+With sealed secrets it is possible to store your secret in github. Sounds like something for you? [Follow this guide!](https://doc.hosting.kitkube.dk/deployment/secrets/)
+```yaml
+sealedSecret:
+  my-secret:
+    type: Opaque
+    encryptedData:
+      password: myEncryptedSecretPassword #remember to encrypt value!
+      otherPassword: myOtherEncryptedAndMaybeRedundantPassword #remember to encrypt value!
+      thirdPassword: encryptedQuestionWhySoManyPasswords? #remember to encrypt value!
+```
 
 ## Configuration
 The following table, lists the configurable parameters.
