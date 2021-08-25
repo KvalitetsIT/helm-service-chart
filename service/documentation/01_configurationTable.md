@@ -1,3 +1,6 @@
+## Configuration
+The following table, lists the configurable parameters.
+
 Parameter | Description | Example
 --- | --- | ---
 **[Basics](#adding-basics)** |
@@ -148,3 +151,19 @@ Parameter | Description | Example
 `sealedSecret.{name}` | Name of secret |
 `sealedSecret.{name}.type` | Type of the secret - Default Opaque | `kubernetes.io/tls`
 `sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
+
+
+## Installing
+First add KvalitetsIT Helm repo to Helm
+```console
+$ helm repo add KvalitetsIT https://raw.githubusercontent.com/KvalitetsIT/helm-repo/master/
+$ helm repo update
+```
+
+Create values.yaml file with the parameters specified  
+See Configuration
+
+Run Helm command:  
+```console
+$ helm install web-service KvalitetsIT/service -f myValues.yaml --version 1.0.3
+```
