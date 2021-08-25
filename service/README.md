@@ -3,16 +3,7 @@ Deploys a generic service
 ## Configuration
 The following table, lists the configurable parameters.
 
-<script>
-var tag = document.createElement("p");
-var text = document.createTextNode("Tutorix is the best e-learning platform");
-tag.appendChild(text);
-
-var element = document.getElementById("configurationTable");
-element.appendChild(tag);
-</script>
-
-<div id=configurationTable></div>
+<iframe src="./documentation/configuration.md" title="W3Schools Free Online Web Tutorials"></iframe>
 
 ## Installing
 First add KvalitetsIT Helm repo to Helm
