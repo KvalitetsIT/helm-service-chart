@@ -1,4 +1,4 @@
-name: Push commit
+name: Generate readme and push
 on:
   push:
     branches: [ master ]
