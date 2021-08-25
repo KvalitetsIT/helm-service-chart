@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create report file
-        run: ./service/documentation/createReadme.sh
+        working-directory: ./service/documentation/
+        run: ./createReadme.sh
       - name: Commit report
         run: |
           git config --global user.name 'ReadmeBot'
