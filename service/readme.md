@@ -4,8 +4,6 @@ Deploys a generic service
 ## Automatic generated readme.md
 The readme.md file is automatic generated from the documentation-folder using github actions.
 
-> Future; Please make this a github action!
-
 ## Installing
 First add KvalitetsIT Helm repo to Helm
 ```console
