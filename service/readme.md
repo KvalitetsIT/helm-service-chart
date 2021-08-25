@@ -281,7 +281,7 @@ deployment:
 ...
   configMapMountPaths:
     nginx-conf:
-      configMapMountPath: /config/nginx.conf
+      configMapMountPath: /config/
       configMapMountSubPath: nginx.conf
 
   # Extra
