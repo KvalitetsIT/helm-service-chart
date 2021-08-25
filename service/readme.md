@@ -1,11 +1,8 @@
 # Service Helm Chart
 Deploys a generic service
 
-## Generate new readme
-1. add (or modify) a file to the service/documentation-folder
-1. Make sure that the file is prefixed with a chapter-number (needs to be two digits)
-1. Run the `createReadme.sh` script
-1. New readme is created!
+## Automatic generated readme.md
+The readme.md file is automatic generated from the documentation-folder using github actions.
 
 > Future; Please make this a github action!
 
