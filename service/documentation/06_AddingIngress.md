@@ -19,10 +19,6 @@ When you find yourself in a position where you wish do deploy an application, th
 1. Add the tls-part in the example below, if TLS/SSL should be used
     > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create certificate)*
 
-
-
-
-
 ```yaml
   ingress:
     enabled: true

@@ -24,7 +24,6 @@ read more about initContainers [here](https://kubernetes.io/docs/concepts/worklo
 First of all we need to configure what image and tag we wish to use for our initContainer.
 > Remember that initContainers must be able to run to completion!
 
-
 ```yaml
 initContainers:
   my-initcontainer:

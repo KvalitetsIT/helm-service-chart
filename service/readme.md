@@ -28,6 +28,7 @@ Parameter | Description | Example
 `namespace` | Namespace to deploy into
 `podSecurityContext` | podSecurityContext
 `podAnnotations` | Annotations for the pod fx prometheus | `prometheus.io/path: actuator prometheus` <br> `prometheus.io/scrape: "true"` <br>
+`serviceAccountName` | serviceAccountName
 `imagePullSecrets` | imagePullSecrets
 `image.repository` | Name of the web-service image
 `image.tag` | Web-service image tag
@@ -181,6 +182,7 @@ Parameter | Description | Example
 `namespace` | Namespace to deploy into
 `podSecurityContext` | podSecurityContext
 `podAnnotations` | Annotations for the pod fx prometheus | `prometheus.io/path: actuator prometheus` <br> `prometheus.io/scrape: "true"` <br>
+`serviceAccountName` | serviceAccountName
 `imagePullSecrets` | imagePullSecrets
 `image.repository` | Name of the web-service image
 `image.tag` | Web-service image tag
@@ -189,6 +191,23 @@ Parameter | Description | Example
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
 
 > see full configuration [here]( #Configuration)
+
+First of all we need to specify the basics. We need to provide image, imagetag and other information regarding the deployment we wish to create.
+
+```yaml
+fullnameOverride: mywebapp
+namespace: my-tenant-namespace
+imagePullSecrets:
+  - name: someSecret
+replicaCount: 4
+image:
+  repository: kvalitetsit/greatestImageOfAllTime
+  tag: 1.1.0
+podAnnotations:
+   prometheus.io/path: /metrics
+   prometheus.io/port: "9113"
+   prometheus.io/scrape: "true"
+```
 ## Adding Deployment
 
 Parameter | Description | Example
@@ -489,3 +508,4 @@ sealedSecret:
       otherPassword: myOtherEncryptedAndMaybeRedundantPassword #remember to encrypt value!
       thirdPassword: encryptedQuestionWhySoManyPasswords? #remember to encrypt value!
 ```
+OhhNo

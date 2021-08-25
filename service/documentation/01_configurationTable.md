@@ -8,6 +8,7 @@ Parameter | Description | Example
 `namespace` | Namespace to deploy into
 `podSecurityContext` | podSecurityContext
 `podAnnotations` | Annotations for the pod fx prometheus | `prometheus.io/path: actuator prometheus` <br> `prometheus.io/scrape: "true"` <br>
+`serviceAccountName` | serviceAccountName
 `imagePullSecrets` | imagePullSecrets
 `image.repository` | Name of the web-service image
 `image.tag` | Web-service image tag
