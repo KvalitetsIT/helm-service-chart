@@ -5,6 +5,7 @@ The following table, lists the configurable parameters.
 
 Parameter | Description | Example
 --- | --- | ---
+**[Basics](#adding-basics)** |
 `fullnameOverride` | Name of the service
 `namespace` | Namespace to deploy into
 `podSecurityContext` | podSecurityContext
@@ -16,7 +17,7 @@ Parameter | Description | Example
 `replicaCount` | Number of replicas - Not used if autoscaling is enabled | `1`, `2`, `3` ..
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
 &nbsp; |
-**Deployment** |
+**[Deployment](#adding-deployment)** |
 `deployment.enabled` | Enables the deployment | `true` or `false`
 `deployment.hostAliases` | hostAliases |
 `deployment.containerPort` | Port on web-service | `8080`
@@ -44,14 +45,14 @@ Parameter | Description | Example
 `deployment.extraVolumes` | Extra volumes for the mounts
 `deployment.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'deployment.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
-**[initContainers](#adding_initcontainer)** |
+**[initContainers](#adding-initcontainer)** |
 `initContainers.<name>.image.repository` | image repo
 `initContainers.<name>.image.tag` | image tag
 `initContainers.<name>.env` | See: Deployment - Environment variables
 `initContainers.<name>.configMapMountPaths` | Set value if config map needs to mount on init container
 `initContainers.<name>.extraVolumeMounts` | Extra volume mounts
 &nbsp; |
-**[Ingress](#adding_ingress)** |
+**[Ingress](#adding-ingress)** |
 `ingress.enabled` | Set to false to disable ingress | `false`
 `ingress.annotations` | Annotations for ingress | `kubernetes.io/ingress.class: nginx`
 `ingress.hosts` | Hosts served by the ingress | `- host: domain.dk`
@@ -59,19 +60,19 @@ Parameter | Description | Example
 `extraIngress` | Map of extra ingress
 `extraIngress.{name}` | Place ingress values under the name value
 &nbsp; |
-**[Service](#adding_service)** |
+**[Service](#adding-service)** |
 `service.enabled` | Set to false to disable service | `false`
 `service.port` | Port on the service | `8080`
 `service.targetPort` | Target port | `proxy-port`
 `service.annotations` | Annotations for service | `prometheus.io/path: /manage/actuator/appmetrics`
 &nbsp; |
-**[PVC](#adding_pvc)** |
+**[PVC](#adding-persistentvolume)** |
 `pvc.{name}` | Name of the pvc - persistent volume claim |
 `pvc.{name}.accessMode` | Accessmode of pvc. One of ReadWriteOnce, ReadOnlyMany or ReadWriteMany. Defaults to ReadWriteMany |
 `pvc.{name}.request` | Storage request for pvc. Defaults to 2Gi |
 `pvc.{name}.storageclass` | Storageclass for pvc |
 &nbsp; |
-**[Documentation](#adding_documentation)** | Default documentation image is `image.repository`-documentation
+**[Documentation](#adding-documentation)** | Default documentation image is `image.repository`-documentation
 **Documentation Deployment** |
 `docDeployment.enabled` | Enables the deployment for the documentation | `true`
 `docDeployment.containerPort` | Port on documentation web-service | `8080`
@@ -88,7 +89,7 @@ Parameter | Description | Example
 `docService.targetPort` | Target port | `proxy-port`
 `docService.annotations` | Annotations for service | `prometheus.io/path: /manage/actuator/appmetrics`
 &nbsp; |
-**[Cronjob](#adding_cronjob)** |
+**[Cronjob](#adding-cronjob)** |
 `cronjob.{name}` | Name of the cronjob |
 `cronjob.{name}.image` | Name of the cronjob image |
 `cronjob.{name}.tag` | Cronjob image tag |
@@ -114,7 +115,7 @@ Parameter | Description | Example
 `cronjob.{name}.extraVolumes` | Extra volumes for the mounts
 `cronjob.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'cronjob.{name}.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
-**[Job](#adding_job)** |
+**[Job](#adding-job)** |
 `job.{name}` | Name of the job |
 `job.{name}.image` | Name of the job image |
 `job.{name}.tag` | Job image tag |
@@ -138,7 +139,7 @@ Parameter | Description | Example
 `job.{name}.extraVolumes` | Extra volumes for the mounts
 `job.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'job.{name}.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
-**[Sidecar](#adding_sidecar)** |
+**[Sidecar](#adding-sidecar)** |
 `sidecar.{name}` | Name of sidecar |
 `sidecar.image.repository` | Repository of image |
 `sidecar.image.tag` | Image tag |
@@ -148,7 +149,7 @@ Parameter | Description | Example
 `sidecar.containerPort` | Port of container |
 `sidecar.extraVolumeMounts` | Extra volumes mount  |
 &nbsp; |
-**[Sealed Secret](#adding_sealed_secret)** |
+**[Sealed Secret](#adding-sealed-secret)** |
 `sealedSecret.{name}` | Name of secret |
 `sealedSecret.{name}.type` | Type of the secret - Default Opaque | `kubernetes.io/tls`
 `sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
