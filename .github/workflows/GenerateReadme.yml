@@ -13,5 +13,6 @@ jobs:
       - name: Commit report
         run: |
           git config --global user.name 'ReadmeBot'
+          git add -A
           git commit -am "Automated report"
           git push
