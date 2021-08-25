@@ -190,9 +190,20 @@ Parameter | Description | Example
 `replicaCount` | Number of replicas - Not used if autoscaling is enabled | `1`, `2`, `3` ..
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
 
+> The `autoscaling.enabled` does not create autoscaling, but just makes sure that `replicaCount` is not used.
+
 > see full configuration [here]( #Configuration)
 
-First of all we need to specify the basics. We need to provide image, imagetag and other information regarding the deployment we wish to create.
+First of all we need to specify the basics. We need to provide information about the image we wish to deploy.
+
+For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `RollingUpdate` (default).
+- `Recreate` : All existing Pods are killed before new ones are created
+- `RollingUpdate` : The Deployment updates Pods in a rolling update fashion
+> This chart does not support paramaters; `maxUnavailable` and `maxSurge` to control the rolling update process.
+
+> Kubernetes Doc: [Deploymentstrategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
+
+> You can also achieve other kinds of deploymentstrategies like; canary, blue/green etc [read here](https://blog.container-solutions.com/kubernetes-deployment-strategies)
 
 ```yaml
 fullnameOverride: mywebapp
@@ -334,7 +345,6 @@ read more about initContainers [here](https://kubernetes.io/docs/concepts/worklo
 First of all we need to configure what image and tag we wish to use for our initContainer.
 > Remember that initContainers must be able to run to completion!
 
-
 ```yaml
 initContainers:
   my-initcontainer:
@@ -390,10 +400,6 @@ When you find yourself in a position where you wish do deploy an application, th
 1. Specify what domain/host that should point to the service
 1. Add the tls-part in the example below, if TLS/SSL should be used
     > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create certificate)*
-
-
-
-
 
 ```yaml
   ingress:
@@ -508,4 +514,3 @@ sealedSecret:
       otherPassword: myOtherEncryptedAndMaybeRedundantPassword #remember to encrypt value!
       thirdPassword: encryptedQuestionWhySoManyPasswords? #remember to encrypt value!
 ```
-OhhNo
