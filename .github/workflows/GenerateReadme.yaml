@@ -1,0 +1,17 @@
+name: Push commit
+on:
+  push:
+    branches: [ master ]
+    
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Commit report
+        run: |
+          git config --global user.name 'ReadmeBot'
+          git commit -am "Automated report"
+          git push
