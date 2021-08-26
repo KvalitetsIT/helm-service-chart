@@ -17,7 +17,7 @@ When you find yourself in a position where you wish do deploy an application, th
 1. Add the appropriate annotations
 1. Specify what domain/host that should point to the service
 1. Add the tls-part in the example below, if TLS/SSL should be used
-    > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create certificate)*
+    > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create the certificate)*
 
 ```yaml
   ingress:
@@ -35,7 +35,7 @@ When you find yourself in a position where you wish do deploy an application, th
         secretName: mydomain.com
 ```
 ### Create SSL/TLS Certificate
- If you wish to create the certificate you need to add the following to a new file in template-folder. (This required Cert-manager to be installed)
+ If you wish to create the certificate you need to add the following to a new file in template-folder. (This requires Cert-manager to be installed)
 ```yaml
 {{- if .Values.certificate.enabled -}}
 apiVersion: cert-manager.io/v1alpha2

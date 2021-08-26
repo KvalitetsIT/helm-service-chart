@@ -8,7 +8,7 @@ Parameter | Description | Example
 
 > see full configuration [here]( #Configuration)
 
-With sealed secrets it is possible to store your secret in github. Sounds like something for you? [Follow this guide!](https://doc.hosting.kitkube.dk/deployment/secrets/)
+With sealed secrets it is possible to store your secrets in github with no security-risk. Sounds like something for you? [Follow this guide!](https://doc.hosting.kitkube.dk/deployment/secrets/)
 ```yaml
 sealedSecret:
   my-secret:

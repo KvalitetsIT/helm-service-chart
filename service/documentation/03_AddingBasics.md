@@ -25,8 +25,7 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 - `RollingUpdate` : The Deployment updates Pods in a rolling update fashion
 > This chart does not support paramaters; `maxUnavailable` and `maxSurge` to control the rolling update process.
 
-> Kubernetes Doc: [Deploymentstrategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
-
+> Kubernetes Doc: [Deploymentstrategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) \
 > You can also achieve other kinds of deploymentstrategies like; canary, blue/green etc [read here](https://blog.container-solutions.com/kubernetes-deployment-strategies)
 
 ```yaml

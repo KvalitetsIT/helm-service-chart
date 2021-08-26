@@ -19,7 +19,7 @@ So an initContainer in this example would inject a theme into the volume `/theme
 read more about initContainers [here](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/).
 
 
-### Deployment) Using initcontainer
+### Using initcontainer
 #### Image
 First of all we need to configure what image and tag we wish to use for our initContainer.
 > Remember that initContainers must be able to run to completion!
