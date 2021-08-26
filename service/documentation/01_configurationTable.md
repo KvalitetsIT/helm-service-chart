@@ -75,6 +75,12 @@ Parameter | Description | Example
 **Documentation Deployment** |
 `docDeployment.enabled` | Enables the deployment for the documentation | `true`
 `docDeployment.containerPort` | Port on documentation web-service | `8080`
+`docDeployment.autoscaling.enabled` | Set to `false` if docReplicaCount should be used, if not set to `true` | `8080`
+`docDeployment.docReplicaCount` | Number of replicas | `2`
+`docDeployment.docPodAnnotations` | annotations for pods in deployment
+`docDeployment.imagePullSecrets` | ?
+`docDeployment.podSecurityContext` | securityContext for pods
+`docDeployment.securityContext` | securityContext for containers
 `docDeployment.readinessProbe` | Set values under this to config readiness probe
 `docDeployment.livenessProbe` | Set values under this to config liveness probe
 **Documentation Ingress** |
@@ -85,6 +91,7 @@ Parameter | Description | Example
 **Documentation Service** |
 `docService.enabled` | Enables the service for the documentation | `true`
 `docService.port` | Port on the service | `8080`
+`docService.type` | Type of service. Either `ClusterIP` (default), `NodePort`, `LoadBalancer` or `ExternalName`|
 `docService.targetPort` | Target port | `proxy-port`
 `docService.annotations` | Annotations for service | `prometheus.io/path: /manage/actuator/appmetrics`
 &nbsp; |

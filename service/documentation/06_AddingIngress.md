@@ -35,7 +35,7 @@ When you find yourself in a position where you wish do deploy an application, th
         secretName: mydomain.com
 ```
 ### Create SSL/TLS Certificate
- If you wish to create the certificate you need to add the following to a new file in template-folder. (This requires Cert-manager to be installed)
+ If you wish to create the certificate you need to add the following to a new file in the template-folder. (This requires Cert-manager to be installed)
 ```yaml
 {{- if .Values.certificate.enabled -}}
 apiVersion: cert-manager.io/v1alpha2
