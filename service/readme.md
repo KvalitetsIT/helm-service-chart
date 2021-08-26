@@ -110,45 +110,48 @@ Parameter | Description | Example
 &nbsp; |
 **[Cronjob](#adding-cronjob)** |
 `cronjob.{name}` | Name of the cronjob |
-`cronjob.{name}.image` | Name of the cronjob image |
-`cronjob.{name}.tag` | Cronjob image tag |
+`cronjob.{name}.image.repository` | Cronjob image repository |
+`cronjob.{name}.image.tag` | Cronjob image tag |
+`cronjob.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never` |
 `cronjob.{name}.schedule` | Schedule for cronjob | `"*/15 * * * *"`
-`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. One of Allow, Forbid, Replace. Defaults to Forbid
+`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. Either `Allow`, `Forbid` or `Replace`. Defaults to `Forbid`
 `cronjob.{name}.commands` | List of cronjob commands | `- /bin/bash`
 `cronjob.{name}.args` | List of arguments to the commands |
-`cronjob.{name}.restartPolicy` | Restartpolicy. One of Always, OnFailure, Never. Defaults to OnFailure
+`cronjob.{name}.restartPolicy` | Restartpolicy. Either `Always`, `OnFailure` or `Never`. Defaults to `OnFailure`
 **Cronjob - Environment variables** |
 `cronjob.{name}.env` | Map of environment variables
 `cronjob.{name}.env.{name}` | Name of the environment variables
 `cronjob.{name}.env.{name}.value` | Value of the environment variable
-`cronjob.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of fieldPath, secretKeyRef, configMapKeyRef | `type: secretKeyRef`
+`cronjob.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef` or `configMapKeyRef` | `type: secretKeyRef`
 `cronjob.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath
 `cronjob.{name}.env.{name}.name` | Optional: Name of the SecretKeyRef or ConfigMapKeyRef
 `cronjob.{name}.env.{name}.key` | Optional: Key for the SecretKeyRef or ConfigMapKeyRef
-`job.{name}.envFrom` | Map of environment variables
-`job.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
+`cronjob.{name}.envFrom` | Map of environment variables
+`cronjob.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
 **Cronjob - Volume mounts** |
 `cronjob.{name}.extraVolumeMounts` | Extra volume mounts
 `cronjob.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'cronjob.{name}.extraVolumes.{name}'
 `cronjob.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
 `cronjob.{name}.extraVolumes` | Extra volumes for the mounts
-`cronjob.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'cronjob.{name}.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
+`cronjob.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'cronjob.{name}.extraVolumeMounts.{name}'<br>The value can be one of `persistentVolumeClaim` or `configMap` and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
 **[Job](#adding-job)** |
 `job.{name}` | Name of the job |
-`job.{name}.image` | Name of the job image |
-`job.{name}.tag` | Job image tag |
+`job.{name}.image.repository` | Name of the job image |
+`job.{name}.image.tag` | Job image tag |
+`job.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never` |
+`job.{name}.backoffLimit` | Number of retries before considering a job as failed | `3` |
 `job.{name}.commands` | List of job commands | <code>commands:<br>&nbsp;&nbsp;- /bin/bash</code>
 `job.{name}.args` | List of arguments to the commands |
-`job.{name}.restartPolicy` | Restartpolicy. One of Always, OnFailure, Never. Defaults to OnFailure
+`job.{name}.restartPolicy` | Restartpolicy. One of `Always`, `OnFailure`, `Never`. Defaults to `OnFailure`
 **Job - Environment variables** |
 `job.{name}.env` | Map of environment variables
 `job.{name}.env.{name}` | Name of the environment variables
 `job.{name}.env.{name}.value` | Value of the environment variable
-`job.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of fieldPath, secretKeyRef, configMapKeyRef | `type: secretKeyRef`
+`job.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef`, `configMapKeyRef` | `type: secretKeyRef`
 `job.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath
-`job.{name}.env.{name}.name` | Optional: Name of the SecretKeyRef or ConfigMapKeyRef
-`job.{name}.env.{name}.key` | Optional: Key for the SecretKeyRef or ConfigMapKeyRef
+`job.{name}.env.{name}.name` | Optional: Name of the `SecretKeyRef` or `ConfigMapKeyRef`
+`job.{name}.env.{name}.key` | Optional: Key for the `SecretKeyRef` or `ConfigMapKeyRef`
 `job.{name}.envFrom` | Map of environment variables
 `job.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
 **Job - Volume mounts** |
@@ -156,7 +159,7 @@ Parameter | Description | Example
 `job.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'job.{name}.extraVolumes.{name}'
 `job.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
 `job.{name}.extraVolumes` | Extra volumes for the mounts
-`job.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'job.{name}.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
+`job.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of `job.{name}.extraVolumeMounts.{name}`<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
 **[Sidecar](#adding-sidecar)** |
 `sidecar.{name}` | Name of sidecar |
@@ -201,8 +204,7 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 - `RollingUpdate` : The Deployment updates Pods in a rolling update fashion
 > This chart does not support paramaters; `maxUnavailable` and `maxSurge` to control the rolling update process.
 
-> Kubernetes Doc: [Deploymentstrategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
-
+> Kubernetes Doc: [Deploymentstrategies](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) \
 > You can also achieve other kinds of deploymentstrategies like; canary, blue/green etc [read here](https://blog.container-solutions.com/kubernetes-deployment-strategies)
 
 ```yaml
@@ -340,7 +342,7 @@ So an initContainer in this example would inject a theme into the volume `/theme
 read more about initContainers [here](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/).
 
 
-### Deployment) Using initcontainer
+### Using initcontainer
 #### Image
 First of all we need to configure what image and tag we wish to use for our initContainer.
 > Remember that initContainers must be able to run to completion!
@@ -399,7 +401,7 @@ When you find yourself in a position where you wish do deploy an application, th
 1. Add the appropriate annotations
 1. Specify what domain/host that should point to the service
 1. Add the tls-part in the example below, if TLS/SSL should be used
-    > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create certificate)*
+    > *Please note that this uses the certificate existing in the secret specified in secretName. (It will not create the certificate)*
 
 ```yaml
   ingress:
@@ -417,7 +419,7 @@ When you find yourself in a position where you wish do deploy an application, th
         secretName: mydomain.com
 ```
 ### Create SSL/TLS Certificate
- If you wish to create the certificate you need to add the following to a new file in template-folder. (This required Cert-manager to be installed)
+ If you wish to create the certificate you need to add the following to a new file in template-folder. (This requires Cert-manager to be installed)
 ```yaml
 {{- if .Values.certificate.enabled -}}
 apiVersion: cert-manager.io/v1alpha2
@@ -493,7 +495,183 @@ deployment:
 ```
 Now our storageclass will take care, and provision volumes for the `storage`-volume, and the other volumes
 ## Adding Cronjob
+
+Parameter | Description | Example
+--- | --- | ---
+**Cronjob** |
+`cronjob.{name}` | Name of the cronjob |
+`cronjob.{name}.image.repository` | Cronjob image repository |
+`cronjob.{name}.image.tag` | Cronjob image tag |
+`cronjob.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never` |
+`cronjob.{name}.schedule` | Schedule for cronjob | `"*/15 * * * *"`
+`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. Either `Allow`, `Forbid` or `Replace`. Defaults to `Forbid`
+`cronjob.{name}.commands` | List of cronjob commands | `- /bin/bash`
+`cronjob.{name}.args` | List of arguments to the commands |
+`cronjob.{name}.restartPolicy` | Restartpolicy. Either `Always`, `OnFailure` or `Never`. Defaults to `OnFailure`
+**Cronjob - Environment variables** |
+`cronjob.{name}.env` | Map of environment variables
+`cronjob.{name}.env.{name}` | Name of the environment variables
+`cronjob.{name}.env.{name}.value` | Value of the environment variable
+`cronjob.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef` or `configMapKeyRef` | `type: secretKeyRef`
+`cronjob.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath
+`cronjob.{name}.env.{name}.name` | Optional: Name of the SecretKeyRef or ConfigMapKeyRef
+`cronjob.{name}.env.{name}.key` | Optional: Key for the SecretKeyRef or ConfigMapKeyRef
+`cronjob.{name}.envFrom` | Map of environment variables
+`cronjob.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
+**Cronjob - Volume mounts** |
+`cronjob.{name}.extraVolumeMounts` | Extra volume mounts
+`cronjob.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'cronjob.{name}.extraVolumes.{name}'
+`cronjob.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
+`cronjob.{name}.extraVolumes` | Extra volumes for the mounts
+`cronjob.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'cronjob.{name}.extraVolumeMounts.{name}'<br>The value can be one of `persistentVolumeClaim` or `configMap` and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
+
+> see full configuration [here]( #Configuration)
+
+To start off with your cronjob, lets start filling in the basics, so lets fill in the name, image, schedule and such.
+
+> Schedule generator [here](https://crontab.guru/)
+
+```yaml
+cronjob:
+  my-cron:
+    image:
+      repository: me/repository
+      tag: 1.0.0
+      pullPolicy: Always
+    schedule: "*/15 * * * *"
+    commands:
+      - /bin/bash
+    args: []
+    concurrencyPolicy: Forbid
+    restartPolicy: OnFailure
+```
+When that is done we can add environment-variables. We can do this in four different ways, depending on where you want the secret to be stored.
+- You can store it as a string in your values-file
+- You can store it in a kubernetes-secret and reference it
+- You can store it in a configmap, and reference it
+- You can store it in pod fields, or container resources, and reference it
+
+> Read more about the different ways to do env-vars [here](https://humanitec.com/blog/handling-environment-variables-with-kubernetes)
+
+We have listed below the four different ways you can store your env-vars:
+```yaml
+cronjob:
+  my-cron:
+    ...
+    env:
+      my-env-notype-var: # NoType
+        value: secret
+      my-env-secretRef-var: # secretKeyRef
+        type: secretKeyRef
+        name: mysecret
+        key: password
+      my-env-configmapref-var: # configmapref
+        type: fieldPath
+        name: mysecret
+        key: password
+      my-env-fieldpath-var: # fieldPath
+        type: fieldPath
+        fieldPath: status.podIP # Using other values follow a similar pattern, using metadata.*, status.*, spec.* to access the value you want.
+
+```
+To create a volume for your cronjob, you can add it like below
+```yaml
+cronjob:
+  my-cron:
+    ...
+    extraVolumes:
+      firstVolume: |
+        persistentVolumeClaim:
+          claimName: my-persistent-volume-claim
+    extraVolumeMounts:
+      firstVolume:
+        mountPath: /path/in/container
+```
 ## Adding job
+Parameter | Description | Example
+--- | --- | ---
+**Job** |
+`job.{name}` | Name of the job |
+`job.{name}.image.repository` | Name of the job image |
+`job.{name}.image.tag` | Job image tag |
+`job.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never` |
+`job.{name}.backoffLimit` | Number of retries before considering a job as failed | `3` |
+`job.{name}.commands` | List of job commands | <code>commands:<br>&nbsp;&nbsp;- /bin/bash</code>
+`job.{name}.args` | List of arguments to the commands |
+`job.{name}.restartPolicy` | Restartpolicy. One of `Always`, `OnFailure`, `Never`. Defaults to `OnFailure`
+**Job - Environment variables** |
+`job.{name}.env` | Map of environment variables
+`job.{name}.env.{name}` | Name of the environment variables
+`job.{name}.env.{name}.value` | Value of the environment variable
+`job.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef`, `configMapKeyRef` | `type: secretKeyRef`
+`job.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath
+`job.{name}.env.{name}.name` | Optional: Name of the `SecretKeyRef` or `ConfigMapKeyRef`
+`job.{name}.env.{name}.key` | Optional: Key for the `SecretKeyRef` or `ConfigMapKeyRef`
+`job.{name}.envFrom` | Map of environment variables
+`job.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
+**Job - Volume mounts** |
+`job.{name}.extraVolumeMounts` | Extra volume mounts
+`job.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'job.{name}.extraVolumes.{name}'
+`job.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
+`job.{name}.extraVolumes` | Extra volumes for the mounts
+`job.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of `job.{name}.extraVolumeMounts.{name}`<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
+
+> see full configuration [here]( #Configuration)
+
+```yaml
+job:
+  my-job:
+    image:
+      repository: me/repository
+      tag: 1.0.0
+      pullPolicy: Always
+    commands:
+      - /bin/bash
+    args: []
+    restartPolicy: OnFailure
+```
+When that is done we can add environment-variables. We can do this in four different ways, depending on where you want the secret to be stored.
+- You can store it as a string in your values-file
+- You can store it in a kubernetes-secret and reference it
+- You can store it in a configmap, and reference it
+- You can store it in pod fields, or container resources, and reference it
+
+> Read more about the different ways to do env-vars [here](https://humanitec.com/blog/handling-environment-variables-with-kubernetes)
+
+We have listed below the four different ways you can store your env-vars:
+```yaml
+job:
+  my-job:
+    ...
+    env:
+      my-env-notype-var: # NoType
+        value: secret
+      my-env-secretRef-var: # secretKeyRef
+        type: secretKeyRef
+        name: mysecret
+        key: password
+      my-env-configmapref-var: # configmapref
+        type: fieldPath
+        name: mysecret
+        key: password
+      my-env-fieldpath-var: # fieldPath
+        type: fieldPath
+        fieldPath: status.podIP # Using other values follow a similar pattern, using metadata.*, status.*, spec.* to access the value you want.
+
+```
+To create a volume for your job, you can add it like below
+```yaml
+job:
+  my-job:
+    ...
+    extraVolumes:
+      firstVolume: |
+        persistentVolumeClaim:
+          claimName: my-persistent-volume-claim
+    extraVolumeMounts:
+      firstVolume:
+        mountPath: /path/in/container
+```
 ## Adding sealed secret
 Parameter | Description | Example
 --- | --- | ---
@@ -504,7 +682,7 @@ Parameter | Description | Example
 
 > see full configuration [here]( #Configuration)
 
-With sealed secrets it is possible to store your secret in github. Sounds like something for you? [Follow this guide!](https://doc.hosting.kitkube.dk/deployment/secrets/)
+With sealed secrets it is possible to store your secrets in github with no security-risk. Sounds like something for you? [Follow this guide!](https://doc.hosting.kitkube.dk/deployment/secrets/)
 ```yaml
 sealedSecret:
   my-secret:
