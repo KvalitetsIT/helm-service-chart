@@ -38,4 +38,3 @@ deployment:
           persistentVolumeClaim:
             claimName: my-persistent-volume-claim
 ```
-If we have a default storageclass, this will start working, and provision a volume matching the claim.

@@ -70,7 +70,9 @@ job:
         fieldPath: status.podIP # Using other values follow a similar pattern, using metadata.*, status.*, spec.* to access the value you want.
 
 ```
-To create a volume for your job, you can add it like below
+Before we can use a volume, we need to create it [find out how to, irght here!](#adding-persistentvolume)
+
+To use the volume created for your cronjob, you can reference it like below
 ```yaml
 job:
   my-job:

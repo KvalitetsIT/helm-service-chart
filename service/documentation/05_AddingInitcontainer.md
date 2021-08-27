@@ -58,4 +58,5 @@ configMapMountPaths:
 extraVolumeMounts:
   service-tls:
     mountPath: /service-tls
+
 ```
