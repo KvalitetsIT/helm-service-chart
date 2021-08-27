@@ -31,7 +31,7 @@ Parameter | Description | Example
 
 > see full configuration [here]( #Configuration)
 
-First of all we need to specify the basics. We need to provide env-variables, arguments for our container, and also containerports.
+First of all we need to specify the basics. We need to provide env-variables, arguments for our container, and also containerports. The image we need to deploy, has already been specified in chapter before [the basics](#adding-basics).
 ```yaml
 deployment:
 ...
@@ -52,7 +52,7 @@ When that is done, we need to setup our probes. Kubernetes describes the probes 
 
 > Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
-Now that we know what our probes are, lets configure them!
+Now that we know what probes are, lets configure them!
 
 > (Written 25 aug 2021) This servicechart does currently not support startupProbes
 

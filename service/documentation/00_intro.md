@@ -12,7 +12,6 @@ $ helm repo update
 ```
 
 Create values.yaml file with the parameters specified  
-See Configuration
 
 Run Helm command:  
 ```console

@@ -31,9 +31,12 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 ```yaml
 fullnameOverride: mywebapp
 namespace: my-tenant-namespace
+podSecurityContext: ??
 imagePullSecrets:
   - name: someSecret
 replicaCount: 4
+autoscaling: false
+deploymentStrategy: Recreate
 image:
   repository: kvalitetsit/greatestImageOfAllTime
   tag: 1.1.0
