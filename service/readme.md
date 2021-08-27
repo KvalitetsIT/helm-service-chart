@@ -12,7 +12,6 @@ $ helm repo update
 ```
 
 Create values.yaml file with the parameters specified  
-See Configuration
 
 Run Helm command:  
 ```console
@@ -182,6 +181,8 @@ Parameter | Description | Example
 `sealedSecret.{name}` | Name of secret |
 `sealedSecret.{name}.type` | Type of the secret - Default Opaque | `kubernetes.io/tls`
 `sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
+
+
 # Mini guides
 There are a few guides, but if it is still not what you're looking for, please direct your attention to the [configuration](#Configuration). Here you will find all the configuration values that can be set.
 ## Adding Basics
@@ -217,9 +218,12 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 ```yaml
 fullnameOverride: mywebapp
 namespace: my-tenant-namespace
+podSecurityContext: ??
 imagePullSecrets:
   - name: someSecret
 replicaCount: 4
+autoscaling: false
+deploymentStrategy: Recreate
 image:
   repository: kvalitetsit/greatestImageOfAllTime
   tag: 1.1.0
@@ -261,7 +265,7 @@ Parameter | Description | Example
 
 > see full configuration [here]( #Configuration)
 
-First of all we need to specify the basics. We need to provide env-variables, arguments for our container, and also containerports.
+First of all we need to specify the basics. We need to provide env-variables, arguments for our container, and also containerports. The image we need to deploy, has already been specified in chapter before [the basics](#adding-basics).
 ```yaml
 deployment:
 ...
@@ -282,7 +286,7 @@ When that is done, we need to setup our probes. Kubernetes describes the probes 
 
 > Read more [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
-Now that we know what our probes are, lets configure them!
+Now that we know what probes are, lets configure them!
 
 > (Written 25 aug 2021) This servicechart does currently not support startupProbes
 
@@ -341,7 +345,7 @@ Parameter | Description | Example
 > see full configuration [here]( #Configuration)
 
 ### Why do we need initcontainers?
-Lets say that we wish to add a custom theme to keycloak. The keycloak-app looks at the `/themes` folder to find the available themes. This `/themes` folder is mounted as a persistent volume from the container, to [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), which means that everything we need to to is to add our theme into that folder in the volume.
+Lets say that we wish to add a custom theme to keycloak. The keycloak-app looks at the `/themes` folder to find the available themes. This `/themes` folder is mounted as a persistent volume from the container, to [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir), which means that everything we need to do is to add our theme into that folder in the volume.
 > The reason why we need to run at every start, is because the persistent volume is mountet to [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) which means that the lifetime of that volume does not exceed the lifetime of the pod.
 
 So an initContainer in this example would inject a theme into the volume `/themes` and thereby provide the instance with the custom theme.
@@ -500,7 +504,7 @@ deployment:
           persistentVolumeClaim:
             claimName: my-persistent-volume-claim
 ```
-Now our storageclass will take care, and provision volumes for the `storage`-volume, and the other volumes
+If we have a default storageclass, this will start working, and provision a volume matching the claim.
 ## Adding Documentation
 Parameter | Description | Example
 --- | --- | ---
