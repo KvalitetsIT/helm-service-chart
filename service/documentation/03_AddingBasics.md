@@ -31,7 +31,10 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 ```yaml
 fullnameOverride: mywebapp
 namespace: my-tenant-namespace
-podSecurityContext: ??
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 3000
+  fsGroup: 2000
 imagePullSecrets:
   - name: someSecret
 replicaCount: 4
