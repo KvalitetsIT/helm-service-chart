@@ -218,7 +218,10 @@ For `deploymentStrategy`, Kubernetes offers two strategies; `Recreate` or `Rolli
 ```yaml
 fullnameOverride: mywebapp
 namespace: my-tenant-namespace
-podSecurityContext: ??
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 3000
+  fsGroup: 2000
 imagePullSecrets:
   - name: someSecret
 replicaCount: 4
@@ -487,11 +490,11 @@ pvc:
     storageclass: longhorn
 ```
 >  Access modes;
-1. ReadWriteOnce -- the volume can be mounted as read-write by a single node
-1. ReadOnlyMany -- the volume can be mounted read-only by many nodes
-1. ReadWriteMany -- the volume can be mounted as read-write by many nodes
-1. ReadWriteOncePod -- the volume can be mounted as read-write by a single Pod. This is only supported for CSI volumes and Kubernetes version 1.22+.\
-\- *Source*; [Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+> 1. ReadWriteOnce -- the volume can be mounted as read-write by a single node
+> 1. ReadOnlyMany -- the volume can be mounted read-only by many nodes
+> 1. ReadWriteMany -- the volume can be mounted as read-write by many nodes
+> 1. ReadWriteOncePod -- the volume can be mounted as read-write by a single Pod. This is only supported for CSI volumes and Kubernetes version 1.22+.\
+> \- *Source*; [Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
 
 When we create a persistentVolumeClaim we can reference it when creating volumes in our deployment-part of the configuration, just like;
 ```yaml
@@ -515,7 +518,7 @@ Parameter | Description | Example
 `docDeployment.autoscaling.enabled` | Set to `false` if docReplicaCount should be used, if not set to `true` | `8080`
 `docDeployment.docReplicaCount` | Number of replicas | `2`
 `docDeployment.docPodAnnotations` | annotations for pods in deployment
-`docDeployment.imagePullSecrets` | ?
+`docDeployment.imagePullSecrets` | List of references pointing to secrets that is used to pull images
 `docDeployment.podSecurityContext` | securityContext for pods
 `docDeployment.securityContext` | securityContext for containers
 `docDeployment.readinessProbe` | Set values under this to config readiness probe
@@ -582,10 +585,10 @@ docIngress:
 
 ```
 >Type values and their behaviors are:
-- **ClusterIP**: Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType.
-- **NodePort**: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
-- **LoadBalancer**: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
-- **ExternalName**: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. \
+>- **ClusterIP**: Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType.
+>- **NodePort**: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+>- **LoadBalancer**: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
+>- **ExternalName**: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up. \
 >
 >Source; https://kubernetes.io/docs/concepts/services-networking/service/
 
@@ -673,7 +676,7 @@ cronjob:
         fieldPath: status.podIP # Using other values follow a similar pattern, using metadata.*, status.*, spec.* to access the value you want.
 
 ```
-Before we can use a volume, we need to create it [find out how to, irght here!](#adding-persistentvolume)
+Before we can use a volume, we need to create it [find out how to, right here!](#adding-persistentvolume)
 
 To use the volume created for your cronjob, you can reference it like below
 ```yaml
