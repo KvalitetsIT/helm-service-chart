@@ -108,7 +108,8 @@ deployment:
     test2:
       configMapMountPath: /config/test2.conf
       configMapMountSubPath: test2.conf
-
+  resources:
+    CPU: 123
   extraContainerPort:
     test1: 23
     test2: 243

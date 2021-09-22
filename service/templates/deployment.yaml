@@ -77,6 +77,8 @@ spec:
             {{ $arg | quote }}
             {{- end }}
           ]
+          resources:
+            {{- toYaml .Values.sidecar.resources | nindent 12 }}
           ports:
             - containerPort: {{ .Values.sidecar.containerPort }}
               name: sidecar-port
@@ -171,7 +173,7 @@ spec:
           {{- end }}
 
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
       {{- end }}
 
       {{- if (.Values.initContainers) }}
@@ -208,6 +210,10 @@ spec:
             {{ $arg | quote }}
             {{- end }}
           ]
+          {{- if ($value.resources)}}
+          resources:
+            {{- toYaml $value.resources | nindent 12 }}
+          {{- end }}
           {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
           volumeMounts:
           {{- end }}
