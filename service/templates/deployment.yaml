@@ -77,8 +77,10 @@ spec:
             {{ $arg | quote }}
             {{- end }}
           ]
+          {{- if (.Values.sidecar.resources) }}
           resources:
             {{- toYaml .Values.sidecar.resources | nindent 12 }}
+          {{- end }}
           ports:
             - containerPort: {{ .Values.sidecar.containerPort }}
               name: sidecar-port

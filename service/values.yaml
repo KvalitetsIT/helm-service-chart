@@ -16,9 +16,6 @@ deployment:
   containerPort: 80
   resources: {}
 
-sidecar:
-  resources: {}
-
 docDeployment:
   enabled: false
   containerPort: 8080
