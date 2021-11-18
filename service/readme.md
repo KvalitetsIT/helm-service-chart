@@ -34,6 +34,12 @@ Parameter | Description | Example
 `autoscaling.enabled` | Enable autoscaling | `true` or `false`
 `replicaCount` | Number of replicas - Not used if autoscaling is enabled | `1`, `2`, `3` ..
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
+`affinity`                          | Affinity for pod assignment.                                     |
+`podAffinityPreset`                  | Pod affinity preset. Ignored if `affinity` is set. Allowed values: ``, `soft` or `hard`       | `""`                         |
+`podAntiAffinityPreset`              | Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: ``,`soft` or `hard`  | `soft`                       |
+`nodeAffinityPreset.type`            | Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard` | `""`                         |
+`nodeAffinityPreset.key`             | Node label key to match Ignored if `affinity` is set.                                     | `""`                         |
+`nodeAffinityPreset.values`          | Node label values to match. Ignored if `affinity` is set.                                 | `[]`
 &nbsp; |
 **[Deployment](#adding-deployment)** |
 `deployment.enabled` | Enables the deployment | `true` or `false`
@@ -335,7 +341,10 @@ deployment:
       mountPath: /path/in/container
 
 ```
-## Adding initcontainer
+## Set Pod affinity
+This chart allows you to set custom Pod affinity using the affinity parameter. Find more information about Pod's affinity in the Kubernetes documentation.
+
+As an alternative, you can use any of the preset configurations for pod affinity, pod anti-affinity, and node affinity. To do so, set the podAffinityPreset, podAntiAffinityPreset, or nodeAffinityPreset parameters.## Adding initcontainer
 Parameter | Description | Example
 --- | --- | ---
 **initContainers** |
