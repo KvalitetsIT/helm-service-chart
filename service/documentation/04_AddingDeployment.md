@@ -98,3 +98,7 @@ deployment:
       mountPath: /path/in/container
 
 ```
+## Set Pod affinity
+This chart allows you to set custom Pod affinity using the affinity parameter. Find more information about Pod's affinity in the Kubernetes documentation.
+
+As an alternative, you can use any of the preset configurations for pod affinity, pod anti-affinity, and node affinity. To do so, set the podAffinityPreset, podAntiAffinityPreset, or nodeAffinityPreset parameters.
