@@ -16,6 +16,10 @@ spec:
       - name: {{ $name }}
         image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
         imagePullPolicy: {{ $value.image.pullPolicy | default "IfNotPresent" }}
+        {{- if ($value.resources)}}
+        resources:
+          {{- toYaml $value.resources | nindent 10 }}
+        {{- end }}
         env: {{ if (not $value.env) }}[]{{ end }}
 
         {{- range $envKey, $envValue := $value.env }}
