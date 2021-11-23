@@ -7,11 +7,6 @@ metadata:
   namespace: {{ $.Values.namespace | default "default" }}
 spec:
   template:
-    annotations:
-      checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-      {{- with .Values.podAnnotations }}
-      {{- toYaml . | nindent 6 }}
-      {{- end }}
     spec:
       {{- with $.Values.imagePullSecrets }}
       imagePullSecrets:
