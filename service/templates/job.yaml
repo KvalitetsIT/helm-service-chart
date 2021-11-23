@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ $name }}{{ if ($value.useconfigmapinname) }}-{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}{{ end }}
+  name: {{ $name }}{{ if ($.Values.useConfigMapInName | default false) }}-{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}{{ end }}
   namespace: {{ $.Values.namespace | default "default" }}
 spec:
   template:
