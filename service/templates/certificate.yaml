@@ -16,6 +16,9 @@ spec:
   {{- if ($value.spec.commonName) }}
   commonName: {{ $value.spec.commonName }}
   {{- end }}
+  {{- if ($value.spec.isCA) }}
+  isCA: {{ $value.spec.isCA }}
+  {{- end }}
   issuerRef:
     name: {{ $value.spec.issuerRef.name }}
     kind: {{ $value.spec.issuerRef.kind }}
