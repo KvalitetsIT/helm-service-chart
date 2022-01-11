@@ -246,18 +246,6 @@ certificate:
         name: ca-issuer
         kind: ClusterIssuer
         group: cert-manager.io
-  new-ca-issuer:
-    namespace: vdx
-    spec:
-      secretName: new-ca-user
-      duration: 87600h
-      renewBefore: 24h
-      commonName: new-ca-user
-      isCA: true
-      issuerRef:
-        name: new-issuer
-        kind: Issuer
-        group: cert-manager.io        
 
 sealedSecret:
   Mariadb:
