@@ -1,3 +1,4 @@
+{{- if or (.Values.extraConfigMapJson) (.Values.extraConfigMap) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,5 +14,5 @@ data:
   {{ $key }}: |
     {{- $value | nindent 4 }}
   {{- end }}
-
+{{- end }}
 
