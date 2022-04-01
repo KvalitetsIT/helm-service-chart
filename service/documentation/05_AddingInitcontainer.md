@@ -7,6 +7,8 @@ Parameter | Description | Example
 `initContainers.<name>.env` | See: Deployment - Environment variables
 `initContainers.<name>.configMapMountPaths` | Set value if config map needs to mount on init container
 `initContainers.<name>.extraVolumeMounts` | Extra volume mounts
+`initContainers.<name>.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
+`initContainers.<name>.extraVolumeMounts.{name}.subPath` | Subpath for the extra volume
 
 > see full configuration [here]( #Configuration)
 
