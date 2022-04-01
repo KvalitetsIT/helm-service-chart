@@ -97,9 +97,14 @@ deployment:
   extraVolumes:
     myEmptyDir: |
       emtpyDir: {}
+    myEmptyDirSubPath: |
+      emtpyDir: {}
   extraVolumeMounts:
     myEmptyDir:
       mountPath: /dir
+    myEmptyDirSubPath:
+      mountPath: /dir
+      subPath: subPath
 
   configMapMountPaths:
     nginx-conf:
@@ -175,6 +180,9 @@ initContainers:
     extraVolumeMounts:
       myEmptyDir:
         mountPath: /dir
+      myEmptyDirSubPath:
+        mountPath: /dir
+        subPath: subPath
 
 extraConfigMapJson:
   organization.json:

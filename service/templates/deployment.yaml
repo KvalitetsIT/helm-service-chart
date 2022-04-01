@@ -163,6 +163,9 @@ spec:
           {{- range $key, $value := .Values.deployment.extraVolumeMounts }}
             - mountPath: {{ $value.mountPath }}
               name: {{ $key }}
+              {{- if ($value.subPath) }}
+              subPath: {{ $value.subPath }}
+              {{- end }}
           {{- end }}
 
           {{- if (.Values.deployment.livenessProbe) }}
@@ -230,7 +233,10 @@ spec:
           {{- range $key, $value := $value.extraVolumeMounts }}
             - mountPath: {{ $value.mountPath }}
               name: {{ $key }}
+              {{- if ($value.subPath) }}
+              subPath: {{ $value.subPath }}
               {{- end }}
+          {{- end }}
       {{- end }}
 
       volumes:

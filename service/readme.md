@@ -66,6 +66,7 @@ Parameter | Description | Example
 `deployment.extraVolumeMounts` | Extra volume mounts
 `deployment.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'deployment.extraVolumes.{name}'
 `deployment.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
+`deployment.extraVolumeMounts.{name}.subPath` | Subpath for the extra volume
 `deployment.extraVolumes` | Extra volumes for the mounts
 `deployment.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'deployment.extraVolumeMounts.{name}'<br>The value can be one of persistentVolumeClaim or configMap and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 &nbsp; |
@@ -75,6 +76,8 @@ Parameter | Description | Example
 `initContainers.<name>.env` | See: Deployment - Environment variables
 `initContainers.<name>.configMapMountPaths` | Set value if config map needs to mount on init container
 `initContainers.<name>.extraVolumeMounts` | Extra volume mounts
+`initContainers.<name>.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
+`initContainers.<name>.extraVolumeMounts.{name}.subPath` | Subpath for the extra volume
 &nbsp; |
 **[Ingress](#adding-ingress)** |
 `ingress.enabled` | Set to false to disable ingress | `false`
