@@ -6,7 +6,7 @@ Parameter | Description | Example
 `initContainers.<name>.image.tag` | image tag
 `initContainers.<name>.env` | See: Deployment - Environment variables
 `initContainers.<name>.configMapMountPaths` | Set value if config map needs to mount on init container
-`initContainers.<name>.extraVolumeMounts` | Extra volume mounts
+`initContainers.<name>.extraVolumeMounts` | Extra volume mounts. Due to limitations of Helm, two mounts cannot refer to the same volume. This chart allows to ovecome this by adding `_<number>` to the end of the name. Thus, `myEmptyDir_1` and `myEmptyDir_2` (and `myEmptyDir`) will refer to the same volume, with name `myEmptyDir`.
 `initContainers.<name>.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
 `initContainers.<name>.extraVolumeMounts.{name}.subPath` | Subpath for the extra volume
 

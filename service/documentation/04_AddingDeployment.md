@@ -24,7 +24,7 @@ Parameter | Description | Example
 `deployment.envFrom.configMapRef` | List of ConfigMaps to read environment variables -from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
 **Deployment - Volume mounts** |
 `deployment.extraVolumeMounts` | Extra volume mounts
-`deployment.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'deployment.extraVolumes.{name}'
+`deployment.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'deployment.extraVolumes.{name}'. Due to limitations of Helm, two mounts cannot refer to the same volume. This chart allows to ovecome this by adding `_<number>` to the end of the name. Thus, `myEmptyDir_1` and `myEmptyDir_2` (and `myEmptyDir`) will refer to the same volume, with name `myEmptyDir`.
 `deployment.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
 `deployment.extraVolumeMounts.{name}.subPath` | Subpath for the extra volume
 `deployment.extraVolumes` | Extra volumes for the mounts

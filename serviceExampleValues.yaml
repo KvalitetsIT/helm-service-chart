@@ -92,6 +92,10 @@ sidecar:
   extraVolumeMounts:
     myEmptyDir:
       mountPath: /dir
+    myEmptyDir_1:
+      mountPath: /dir1
+    myEmptyDir_2:
+      mountPath: /dir2
       
 deployment:
   extraVolumes:
@@ -102,6 +106,10 @@ deployment:
   extraVolumeMounts:
     myEmptyDir:
       mountPath: /dir
+    myEmptyDir_1:
+      mountPath: /dir1
+    myEmptyDir_2:
+      mountPath: /dir2
     myEmptyDirSubPath:
       mountPath: /dir
       subPath: subPath
@@ -180,9 +188,12 @@ initContainers:
     extraVolumeMounts:
       myEmptyDir:
         mountPath: /dir
-      myEmptyDirSubPath:
+      myEmptyDirSubPath_1:
         mountPath: /dir
-        subPath: subPath
+        subPath: subPath1
+      myEmptyDirSubPath_2:
+        mountPath: /dir/otherPath
+        subPath: subPath2
 
 extraConfigMapJson:
   organization.json:
