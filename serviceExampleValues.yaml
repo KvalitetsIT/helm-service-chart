@@ -2,6 +2,8 @@ fullnameOverride: vdx-pexip-status
 namespace: vdx
 
 replicaCount: 1
+revisionHistoryLimit: 5
+
 deploymentStrategy: Recreate
 
 image:
