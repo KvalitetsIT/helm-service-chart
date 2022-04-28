@@ -205,6 +205,7 @@ Parameter | Description | Example
 `image.tag` | Web-service image tag
 `autoscaling.enabled` | Enable autoscaling | `true` or `false`
 `replicaCount` | Number of replicas - Not used if autoscaling is enabled | `1`, `2`, `3` ..
+`revisionHistoryLimit` | Maximum replicasets that are saved for rollback. | `1`, `2`, `3` ..
 `deploymentStrategy` | Enables to set deployment strategy | `Recreate`
 
 > The `autoscaling.enabled` does not create autoscaling, but just makes sure that `replicaCount` is not used.
