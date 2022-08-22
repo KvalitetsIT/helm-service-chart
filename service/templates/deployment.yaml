@@ -1,6 +1,6 @@
 {{- if .Values.deployment.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ .Values.deployment.kind | default "Deployment" }}
 metadata:
   name: {{ include "service.fullname" . }}
   namespace: {{ .Values.namespace | default "default" }}
