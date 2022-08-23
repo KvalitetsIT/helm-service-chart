@@ -8,8 +8,10 @@ metadata:
     {{- include "service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
+  {{- if eq .Values.deployment.kind "Deployment"}}
   replicas: {{ .Values.replicaCount }}
-    {{- end }}
+  {{- end }}
+  {{- end }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   {{- if (.Values.deploymentStrategy) }}
   strategy:

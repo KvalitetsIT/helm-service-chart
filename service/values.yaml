@@ -5,6 +5,8 @@
 replicaCount: 1
 docReplicaCount: 1
 
+revisionHistoryLimit: 5
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent
