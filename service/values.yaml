@@ -15,6 +15,7 @@ image:
 
 deployment:
   enabled: true
+  kind: Deployment
   containerPort: 80
   resources: {}
 
