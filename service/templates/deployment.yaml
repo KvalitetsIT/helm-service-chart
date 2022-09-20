@@ -175,6 +175,9 @@ spec:
               {{- if ($value.subPath) }}
               subPath: {{ $value.subPath }}
               {{- end }}
+              {{- if ($value.readOnly) }}
+              readOnly: {{ $value.readOnly }}
+              {{- end }}
           {{- end }}
 
           {{- if (.Values.deployment.livenessProbe) }}

@@ -105,6 +105,8 @@ deployment:
       emtpyDir: {}
     myEmptyDirSubPath: |
       emtpyDir: {}
+    myReadOnlyDir: |
+      emtpyDir: {}
   extraVolumeMounts:
     myEmptyDir:
       mountPath: /dir
@@ -115,6 +117,9 @@ deployment:
     myEmptyDirSubPath:
       mountPath: /dir
       subPath: subPath
+    myReadOnlyDir:
+      mountPath: /ro-dir
+      readOnly: true
 
   configMapMountPaths:
     nginx-conf:
