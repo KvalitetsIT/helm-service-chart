@@ -1,6 +1,6 @@
 ---
 {{- range $name, $value := .Values.cronjob}}
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ $name }}
@@ -8,8 +8,29 @@ metadata:
 spec:
   schedule: {{ required "Required value missing: 'schedule'" $value.schedule | quote }}
   concurrencyPolicy: {{ $value.concurrencyPolicy | default "Forbid"}}
+  {{- if ($value.startingDeadlineSeconds) }}
+  startingDeadlineSeconds: {{ $value.startingDeadlineSeconds }}
+  {{- end }}
+  {{- if ($value.successfulJobsHistoryLimit) }}
+  successfulJobsHistoryLimit: {{ $value.successfulJobsHistoryLimit }}
+  {{- end }}
+  {{- if ($value.failedJobsHistoryLimit) }}
+  failedJobsHistoryLimit: {{ $value.failedJobsHistoryLimit }}
+  {{- end }}
   jobTemplate:
     spec:
+      {{- if ($value.parallelism) }}
+      parallelism: {{ $value.parallelism }}
+      {{- end }}
+      {{- if ($value.completions) }}
+      completions: {{ $value.completions }}
+      {{- end }}
+      {{- if ($value.backoffLimit) }}
+      backoffLimit: {{ $value.backoffLimit }}
+      {{- end }}
+      {{- if ($value.activeDeadlineSeconds) }}
+      activeDeadlineSeconds: {{ $value.activeDeadlineSeconds }}
+      {{- end }}
       template:
         spec:
           containers:
@@ -74,6 +95,9 @@ spec:
                 name: {{ $key }}
             {{- end }}
           restartPolicy: {{ $value.restartPolicy | default "OnFailure" }}
+          {{- if ($value.terminationGracePeriodSeconds) }}
+          terminationGracePeriodSeconds: {{ $value.terminationGracePeriodSeconds }}
+          {{- end }}
           {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
           volumes:
             - name: configmap
