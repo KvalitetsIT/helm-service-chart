@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ $name }}
+  name: {{ $value.nameOverwrite | default $name }}
   namespace: {{ $.Values.namespace | default "default" }}
 spec:
   schedule: {{ required "Required value missing: 'schedule'" $value.schedule | quote }}
@@ -34,7 +34,7 @@ spec:
       template:
         spec:
           containers:
-          - name: {{ $name }}
+          - name: {{ $value.nameOverwrite | default $name }}
             image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
             imagePullPolicy: {{ $value.image.pullPolicy | default "IfNotPresent" }}
             env: {{ if (not $value.env) }}[]{{ end }}

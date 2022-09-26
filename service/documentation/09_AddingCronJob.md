@@ -1,40 +1,41 @@
 ## Adding Cronjob
 
-Parameter | Description | Example
---- | --- | ---
+Parameter | Description                                                                                                                                                                                                                                                | Example
+--- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---
 **Cronjob** |
-`cronjob.{name}` | Name of the cronjob |
-`cronjob.{name}.image.repository` | Cronjob image repository |
-`cronjob.{name}.image.tag` | Cronjob image tag |
-`cronjob.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never` |
-`cronjob.{name}.schedule` | Schedule for cronjob | `"*/15 * * * *"`
-`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. Either `Allow`, `Forbid` or `Replace`. Defaults to `Forbid`
-`cronjob.{name}.startingDeadlineSeconds` | StartingDeadlineSeconds for cronjob
-`cronjob.{name}.successfulJobsHistoryLimit` | SuccessfulJobsHistoryLimit for cronjob
-`cronjob.{name}.failedJobsHistoryLimit` | FailedJobsHistoryLimit for cronjob
-`cronjob.{name}.parallelism` | Parallelism for cronjob
-`cronjob.{name}.completions` | Completions for cronjob
-`cronjob.{name}.backoffLimit` | BackoffLimit for cronjob
-`cronjob.{name}.activeDeadlineSeconds` | ActiveDeadlineSeconds for cronjob
-`cronjob.{name}.terminationGracePeriodSeconds` | TerminationGracePeriodSeconds for cronjob
-`cronjob.{name}.commands` | List of cronjob commands | `- /bin/bash`
-`cronjob.{name}.args` | List of arguments to the commands |
-`cronjob.{name}.restartPolicy` | Restartpolicy. Either `Always`, `OnFailure` or `Never`. Defaults to `OnFailure`
+`cronjob.{name}` | Name of the cronjob                                                                                                                                                                                                                                        |
+`cronjob.{name}.nameOverwrite` | Optional name overwrite                                                                                                                                                                                                                                    |
+`cronjob.{name}.image.repository` | Cronjob image repository                                                                                                                                                                                                                                   |
+`cronjob.{name}.image.tag` | Cronjob image tag                                                                                                                                                                                                                                          |
+`cronjob.{name}.image.pullPolicy` | pullPolicy. Either `Always`, `IfNotPresent` or `Never`                                                                                                                                                                                                     |
+`cronjob.{name}.schedule` | Schedule for cronjob                                                                                                                                                                                                                                       | `"*/15 * * * *"`
+`cronjob.{name}.concurrencyPolicy` | ConcurrencyPolicy for cronjob. Either `Allow`, `Forbid` or `Replace`. Defaults to `Forbid`                                                                                                                                                                 
+`cronjob.{name}.startingDeadlineSeconds` | StartingDeadlineSeconds for cronjob                                                                                                                                                                                                                        
+`cronjob.{name}.successfulJobsHistoryLimit` | SuccessfulJobsHistoryLimit for cronjob                                                                                                                                                                                                                     
+`cronjob.{name}.failedJobsHistoryLimit` | FailedJobsHistoryLimit for cronjob                                                                                                                                                                                                                         
+`cronjob.{name}.parallelism` | Parallelism for cronjob                                                                                                                                                                                                                                    
+`cronjob.{name}.completions` | Completions for cronjob                                                                                                                                                                                                                                    
+`cronjob.{name}.backoffLimit` | BackoffLimit for cronjob                                                                                                                                                                                                                                   
+`cronjob.{name}.activeDeadlineSeconds` | ActiveDeadlineSeconds for cronjob                                                                                                                                                                                                                          
+`cronjob.{name}.terminationGracePeriodSeconds` | TerminationGracePeriodSeconds for cronjob                                                                                                                                                                                                                  
+`cronjob.{name}.commands` | List of cronjob commands                                                                                                                                                                                                                                   | `- /bin/bash`
+`cronjob.{name}.args` | List of arguments to the commands                                                                                                                                                                                                                          |
+`cronjob.{name}.restartPolicy` | Restartpolicy. Either `Always`, `OnFailure` or `Never`. Defaults to `OnFailure`                                                                                                                                                                            
 **Cronjob - Environment variables** |
-`cronjob.{name}.env` | Map of environment variables
-`cronjob.{name}.env.{name}` | Name of the environment variables
-`cronjob.{name}.env.{name}.value` | Value of the environment variable
-`cronjob.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef` or `configMapKeyRef` | `type: secretKeyRef`
-`cronjob.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath
-`cronjob.{name}.env.{name}.name` | Optional: Name of the SecretKeyRef or ConfigMapKeyRef
-`cronjob.{name}.env.{name}.key` | Optional: Key for the SecretKeyRef or ConfigMapKeyRef
-`cronjob.{name}.envFrom` | Map of environment variables
-`cronjob.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
+`cronjob.{name}.env` | Map of environment variables                                                                                                                                                                                                                               
+`cronjob.{name}.env.{name}` | Name of the environment variables                                                                                                                                                                                                                          
+`cronjob.{name}.env.{name}.value` | Value of the environment variable                                                                                                                                                                                                                          
+`cronjob.{name}.env.{name}.type` | Optional: specify type of the environment variables if it should be read from a secret or configmap.<br> One of `fieldPath`, `secretKeyRef` or `configMapKeyRef`                                                                                           | `type: secretKeyRef`
+`cronjob.{name}.env.{name}.fieldPath` | Optional: Value of fieldPath                                                                                                                                                                                                                               
+`cronjob.{name}.env.{name}.name` | Optional: Name of the SecretKeyRef or ConfigMapKeyRef                                                                                                                                                                                                      
+`cronjob.{name}.env.{name}.key` | Optional: Key for the SecretKeyRef or ConfigMapKeyRef                                                                                                                                                                                                      
+`cronjob.{name}.envFrom` | Map of environment variables                                                                                                                                                                                                                               
+`cronjob.{name}.envFrom.configMapRef` | List of ConfigMaps to read environment variables from                                                                                                                                                                                                      | <code>configMapRef:<br>&nbsp;&nbsp;- my-configmap</code>
 **Cronjob - Volume mounts** |
-`cronjob.{name}.extraVolumeMounts` | Extra volume mounts
-`cronjob.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'cronjob.{name}.extraVolumes.{name}'
-`cronjob.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume
-`cronjob.{name}.extraVolumes` | Extra volumes for the mounts
+`cronjob.{name}.extraVolumeMounts` | Extra volume mounts                                                                                                                                                                                                                                        
+`cronjob.{name}.extraVolumeMounts.{name}` | Name of the extra volume mount. This must match the name of 'cronjob.{name}.extraVolumes.{name}'                                                                                                                                                           
+`cronjob.{name}.extraVolumeMounts.{name}.mountPath` | Mountpath for the extra volume                                                                                                                                                                                                                             
+`cronjob.{name}.extraVolumes` | Extra volumes for the mounts                                                                                                                                                                                                                               
 `cronjob.{name}.extraVolumes.{name}` | Extra volumes for the mounts.<br>This must match the name of 'cronjob.{name}.extraVolumeMounts.{name}'<br>The value can be one of `persistentVolumeClaim` or `configMap` and the value for claimname _must_ match 'pvc.{name}' or a configmap respectively | <code>my-storage: &#124;-<br>&nbsp;&nbsp;persistentVolumeClaim:<br>&nbsp;&nbsp;&nbsp;&nbsp;claimName: my-application-storage</code>
 
 > see full configuration [here]( #Configuration)
