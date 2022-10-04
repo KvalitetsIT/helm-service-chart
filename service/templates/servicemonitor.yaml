@@ -1,0 +1,23 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "service.labels" . | nindent 4 }}
+    release: prometheus
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  endpoints:
+    - metricRelabelings:
+        - action: replace
+          sourceLabels:
+            - service
+          targetLabel: instance
+      path: {{ .Values.serviceMonitor.path | default "/metrics" }}
+      scheme: http
+      targetPort: {{ .Values.serviceMonitor.targetPort | default .Values.deployment.containerPort }}
+  jobLabel: jobLabel
+  selector:
+    {{- include "service.selectorLabels" . | nindent 4 }}
+{{- end }}
