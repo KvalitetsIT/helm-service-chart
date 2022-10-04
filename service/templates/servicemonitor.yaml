@@ -17,7 +17,6 @@ spec:
       path: {{ .Values.serviceMonitor.path | default "/metrics" }}
       scheme: http
       targetPort: {{ .Values.serviceMonitor.targetPort | default .Values.deployment.containerPort }}
-  jobLabel: jobLabel
   selector:
     {{- include "service.selectorLabels" . | nindent 4 }}
 {{- end }}
