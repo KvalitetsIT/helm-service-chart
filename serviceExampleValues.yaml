@@ -293,3 +293,7 @@ sealedSecret:
           "encrypted": "{{ index . "key" }}",
         }
       plaintext: somevalue
+
+serviceMonitor:
+  enabled: true
+  interval: 5s

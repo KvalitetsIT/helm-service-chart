@@ -17,6 +17,9 @@ spec:
       path: {{ .Values.serviceMonitor.path | default "/metrics" }}
       scheme: http
       targetPort: {{ .Values.serviceMonitor.targetPort | default .Values.deployment.containerPort }}
+      {{- if (.Values.serviceMonitor.interval) }}
+      interval: {{ .Values.serviceMonitor.interval }}
+      {{- end }}
   selector:
     matchLabels:
       {{- include "service.selectorLabels" . | nindent 6 }}
