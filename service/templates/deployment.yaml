@@ -98,6 +98,7 @@ spec:
               {{ $newLength := int (sub (len $key) (len $underScoreSuffix)) }}
               name: {{ substr 0 $newLength $key }}
           {{- end }}
+          {{- if or (.Values.sidecar.configMapMountPaths) (.Values.sidecar.extraVolumeMounts) }}
           volumeMounts:
           {{- end }}
           {{- range $key, $value := .Values.sidecar.configMapMountPaths }}
@@ -120,6 +121,7 @@ spec:
               readOnly: {{ $value.readOnly }}
               {{- end }}
           {{- end }}
+        {{- end }}
 
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
