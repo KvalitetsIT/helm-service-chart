@@ -106,8 +106,8 @@ spec:
               {{- if ($value.configMapMountSubPath) }}
               subPath: {{ $value.configMapMountSubPath }}
               {{- end }}
-            {{- end }}
-            {{- range $key, $value := .Values.sidecar.extraVolumeMounts }}
+          {{- end }}
+          {{- range $key, $value := .Values.sidecar.extraVolumeMounts }}
             - mountPath: {{ $value.mountPath }}
               {{- /* # Remove "_<number>" at end of string */}}
               {{ $underScoreSuffix := regexFind "_\\d+$" $key }}
@@ -120,7 +120,7 @@ spec:
               readOnly: {{ $value.readOnly }}
               {{- end }}
           {{- end }}
-      {{- end }}
+
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
           securityContext:
