@@ -4,7 +4,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     {{- include "service.labels" . | nindent 4 }}
-    release: prometheus
+    release: {{ .Values.serviceMonitor.release | default "prometheus" }}
   name: {{ include "service.fullname" . }}
   namespace: {{ .Values.namespace | default "default" }}
 spec:
