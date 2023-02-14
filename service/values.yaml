@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 docReplicaCount: 1
 
 revisionHistoryLimit: 5
@@ -20,11 +20,33 @@ deployment:
   enabled: true
   kind: Deployment
   containerPort: 80
+
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    seccompProfile: RuntimeDefault
+
+  resources: {}
+
+sidecar:
+  enabled: false
+  containerPort: 7070
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    seccompProfile: RuntimeDefault
   resources: {}
 
 docDeployment:
   enabled: false
   containerPort: 8080
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    seccompProfile: RuntimeDefault
   env: []
 
 imagePullSecrets: []
@@ -39,19 +61,12 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  automount: false
 
 podAnnotations: {}
 
 podSecurityContext: {}
   # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 service:
   enabled: true
