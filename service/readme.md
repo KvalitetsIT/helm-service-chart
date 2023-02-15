@@ -40,7 +40,6 @@ Parameter | Description                                                         
 `nodeAffinityPreset.type`            | Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`                                                                                                                                                                                                      | `""`                         |
 `nodeAffinityPreset.key`             | Node label key to match Ignored if `affinity` is set.                                                                                                                                                                                                                                          | `""`                         |
 `nodeAffinityPreset.values`          | Node label values to match. Ignored if `affinity` is set.                                                                                                                                                                                                                                      | `[]`
-`serviceAccount.automount`          | Sets automountServiceAccountToken. Default `false`.
 &nbsp; |
 **[Deployment](#adding-deployment)** |
 `deployment.enabled` | Enables the deployment                                                                                                                                                                                                                                                                         | `true` or `false`
@@ -53,12 +52,6 @@ Parameter | Description                                                         
 `deplyment.livenessProbe` | Set values under this to config liveness probe                                                                                                                                                                                                                                                 
 `deplyment.commands` | List of cronjob commands                                                                                                                                                                                                                                                                       | `- /bin/bash`
 `deplyment.args` | List of arguments to the commands                                                                                                                                                                                                                                                              |
-`deplyment.securityContext` | SecurityContext for deplyment container.
-`deplyment.securityContext.readOnlyRootFilesystem` | SecurityContext readOnlyRootFilesystem for deplyment container. Default `true`
-`deplyment.securityContext.allowPrivilegeEscalation` | SecurityContext allowPrivilegeEscalation for deplyment container. Default `false`
-`deplyment.securityContext.runAsNonRoot` | SecurityContext runAsNonRoot for deplyment container. Default `true`
-`deplyment.securityContext.seccompProfile` | SecurityContext seccompProfile for deplyment container. Default `RuntimeDefault`
-`deplyment.securityContextAddCapabilities` | SecurityContext capabilities list of capabilities to Add. | - NET_ADMIN <br> - SYS_TIME                                                                                     |
 **Deployment - Environment variables** |
 `deployment.env` | Map of environment variables                                                                                                                                                                                                                                                                   
 `deployment.env.{name}` | Name of the environment variables                                                                                                                                                                                                                                                              
@@ -115,12 +108,6 @@ Parameter | Description                                                         
 `docDeployment.securityContext` | securityContext for containers                                                                                                                                                                                                                                                                 
 `docDeployment.readinessProbe` | Set values under this to config readiness probe                                                                                                                                                                                                                                                
 `docDeployment.livenessProbe` | Set values under this to config liveness probe                                                                                                                                                                                                                                                 
-`docDeployment.securityContext` | SecurityContext for deplyment container.
-`docDeployment.securityContext.readOnlyRootFilesystem` | SecurityContext readOnlyRootFilesystem for doc container. Default `true`
-`docDeployment.securityContext.allowPrivilegeEscalation` | SecurityContext allowPrivilegeEscalation for doc container. Default `false`
-`docDeployment.securityContext.runAsNonRoot` | SecurityContext runAsNonRoot for doc container. Default `true`
-`docDeployment.securityContext.seccompProfile` | SecurityContext seccompProfile for doc container. Default `RuntimeDefault`
-`docDeployment.securityContextAddCapabilities` | SecurityContext capabilities list of capabilities to Add. | - NET_ADMIN <br> - SYS_TIME                                                                                     |
 **Documentation Ingress** |
 `docIngress.enabled` | Enables the ingress for the documentation                                                                                                                                                                                                                                                      | `true`
 `docIngress.annotations` | Annotations for documentation ingress                                                                                                                                                                                                                                                          | `kubernetes.io/ingress.class: nginx`
