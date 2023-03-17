@@ -825,3 +825,29 @@ sealedSecret:
       otherPassword: myOtherEncryptedAndMaybeRedundantPassword #remember to encrypt value!
       thirdPassword: encryptedQuestionWhySoManyPasswords? #remember to encrypt value!
 ```
+
+## Set securityContext
+Parameter | Description                                                                 | Default
+--- |-----------------------------------------------------------------------------| ---
+**securityContext** |
+`securityContext.readOnlyRootFilesystem` | Mounts the container's root filesystem as read-only.                        | `true`
+`securityContext.allowPrivilegeEscalation` | Controls whether a process can gain more privileges than its parent process | `false`
+`securityContext.runAsNonRoot` | Type of the secret - Default Opaque                                         | `true`
+`securityContext.seccompProfile` | Filter a process's system calls.                                            | `RuntimeDefault`
+`securityContextAddCapabilities` | Add capabilities, default all droped                               | `-`
+
+
+It is possible to overwrite the default securityContext and add system capabilities.
+```yaml
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile: RuntimeDefault
+securityContextAddCapabilities:
+   - CAP_CHOWN
+   - CAP_SETGID
+   - CAP_SETUID
+```
+
+The full list of capabilities are found her: https://man7.org/linux/man-pages/man7/capabilities.7.html
