@@ -187,6 +187,18 @@ Parameter | Description                                                         
 `sealedSecret.{name}` | Name of secret                                                                                                                                                                                                                                                                                 |
 `sealedSecret.{name}.type` | Type of the secret - Default Opaque                                                                                                                                                                                                                                                            | `kubernetes.io/tls`
 `sealedSecret.{name}.encryptedData` | List of 'Key: Value' pair of the encrypted data                                                                                                                                                                                                                                                | `password: AgBOQOoh7RGqTBPPSG0Ctbf...`
+&nbsp; |
+**[ServiceMonitor](#adding-ServiceMonitor)** |
+`serviceMonitor.enabled` | Enable service monitor                                                                                                                                                                                                                                                                         |
+`serviceMonitor.release` | Value of relese label, to select promethues                                                                                                                                                                                                                                                    |
+`serviceMonitor.path` | Path for metric endpoint. Default `/metrics`                                                                                                                                                                                                                                                   |
+`serviceMonitor.targetPort` | Port for metric endpoint. Default `deployment.containerPort`                                                                                                                                                                                                                                   |
+`serviceMonitor.interval` | Scrape interval. Defalt non, using promethues default                                                                                                                                                                                                                                          |
+&nbsp; |
+**[PrometheusRule](#adding-PrometheusRule)** |
+`prometheusRules.enabled` | Enable PrometheusRule                                                                                                                                                                                                                                                                          |
+`prometheusRules.release` | Value of relese label, to select promethues                                                                                                                                                                                                                                                    |
+`prometheusRules.rules` | yaml with rules                                                                                                                                                                                                                                                                                |
 
 
 # Mini guides
@@ -851,3 +863,44 @@ securityContextAddCapabilities:
 ```
 
 The full list of capabilities are found her: https://man7.org/linux/man-pages/man7/capabilities.7.html
+
+## Set ServiceMonitor
+Parameter | Description                                                                 | Default
+--- |-----------------------------------------------------------------------------| ---
+**ServiceMonitor** |
+`serviceMonitor.enabled` | Enable service monitor                                                                                                                                                                                                                                                                         |
+`serviceMonitor.release` | Value of relese label, to select promethues                                                                                                                                                                                                                                                    |
+`serviceMonitor.path` | Path for metric endpoint. Default `/metrics`                                                                                                                                                                                                                                                   |
+`serviceMonitor.targetPort` | Port for metric endpoint. Default `deployment.containerPort`                                                                                                                                                                                                                                   |
+`serviceMonitor.interval` | Scrape interval. Defalt non, using promethues default                                                                                                                                                                                                                                          |
+
+```yaml
+serviceMonitor:
+  enabled: true
+  release: prometheus-stack-infrastructure
+```
+
+## Set PrometheusRule
+Parameter | Description                                                                 | Default
+--- |-----------------------------------------------------------------------------| ---
+**PrometheusRule** |
+`prometheusRules.enabled` | Enable PrometheusRule                                                                                                                                                                                                                                                                          |
+`prometheusRules.release` | Value of relese label, to select promethues                                                                                                                                                                                                                                                    |
+`prometheusRules.rules` | yaml with rules                                                                                                                                                                                                                                                                                |
+
+```yaml
+prometheusRules:
+  enabled: true
+  release: prometheus-stack-infrastructure
+  rules:
+     - alert: 'CRITICAL: MariaDB backup failed'
+       expr: backup_status{job='mariadb_data_storage_backup'} == 1
+       labels:
+          severity: critical
+          component: data-storage-services
+          app: mariadb
+       annotations:
+          summary: 'CRITICAL: MariaDB backup {{$labels.job}} failed'
+          description: MariaDB backup {{$labels.job}} failed for namespace {{$labels.kubernetes_namespace}}
+    
+```

@@ -15,6 +15,8 @@ image:
 
 serviceMonitor:
   enabled: false
+prometheusRules:
+  enabled: false
 
 deployment:
   enabled: true
