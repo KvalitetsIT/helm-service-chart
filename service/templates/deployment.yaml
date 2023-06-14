@@ -191,18 +191,22 @@ spec:
           {{- end }}
           {{- end }}
           {{- end }}
+          {{- if (.Values.deployment.commands) }}
           command: [
             {{- range $index, $cmd := .Values.deployment.commands }}
             {{- if $index }},{{- end }}
             {{ $cmd | quote }}
             {{- end }}
           ]
+          {{- end }}
+          {{- if (.Values.deployment.args ) }}
           args: [
             {{- range $index, $arg := .Values.deployment.args }}
             {{- if $index }},{{- end }}
             {{ $arg | quote }}
             {{- end }}
           ]
+          {{- end }}
           ports:
             - name: container-port
               containerPort: {{ .Values.deployment.containerPort }}
