@@ -31,6 +31,65 @@ deployment:
 
   resources: {}
 
+extraDeployments:
+  enabled: false
+  # deployments:
+  #   consumer:
+  #     image:
+  #       repository: service-consumer
+  #       pullPolicy: IfNotPresent
+  #       # Overrides the image tag whose default is the service version.
+  #       tag: ""
+  #     deployment:
+  #       kind: Deployment
+  #       containerPort: 80
+  #       resources: {}
+
+  #       securityContext:
+  #         readOnlyRootFilesystem: true
+  #         allowPrivilegeEscalation: false
+  #         runAsNonRoot: true
+  #         seccompProfile: RuntimeDefault
+
+  #     podAnnotations: {}
+  #     podSecurityContext: {}
+  #     nodeSelector: {}
+  #     ## @param operator.podAffinityPreset Pod affinity preset
+  #     ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+  #     ## Allowed values: soft, hard
+  #     ##
+  #     podAffinityPreset: ""
+
+  #     ## @param operator.podAntiAffinityPreset Pod anti-affinity preset.
+  #     ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+  #     ## Allowed values: `soft` or `hard`
+  #     ##
+  #     podAntiAffinityPreset: "soft"
+
+  #     ## Node affinity preset
+  #     ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+  #     ##
+  #     nodeAffinityPreset:
+  #       ## @param operator.nodeAffinityPreset.type Node affinity preset type. Allowed values: `soft` or `hard`
+  #       ##
+  #       type: ""
+  #       ## @param operator.nodeAffinityPreset.key Set nodeAffinity preset key
+  #       ## E.g.
+  #       ## key: "kubernetes.io/e2e-az-name"
+  #       ##
+  #       key: ""
+  #       ## @param operator.nodeAffinityPreset.values Set nodeAffinity preset values
+  #       ## E.g.
+  #       ## values:
+  #       ##   - e2e-az1
+  #       ##   - e2e-az2
+  #       ##
+  #       values: []
+
+
+  #       tolerations: []
+  #         # fsGroup: 2000
+
 sidecar:
   enabled: false
   containerPort: 7070
