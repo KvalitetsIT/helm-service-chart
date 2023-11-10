@@ -83,3 +83,25 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Common labels
+*/}}
+{{- define "service.labels-extras" -}}
+helm.sh/chart: {{ include "service.chart" .root }}
+app: {{ .root.Release.Name }}
+{{ include "service.selectorLabels-extras" (dict "root" .root "name" .name) }}
+{{- if .root.Chart.AppVersion }}
+app.kubernetes.io/version: {{ .root.Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .root.Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels documentation
+*/}}
+{{- define "service.selectorLabels-extras" -}}
+app.kubernetes.io/name: {{ include "service.name" .root }}-{{ .name }}
+app.kubernetes.io/instance: {{ .root.Release.Name }}-{{ .name }}
+{{- end }}
