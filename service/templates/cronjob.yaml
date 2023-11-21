@@ -32,6 +32,13 @@ spec:
       activeDeadlineSeconds: {{ $value.activeDeadlineSeconds }}
       {{- end }}
       template:
+        {{- if ($value.jobLabels) }}
+        metadata:
+          labels:
+          {{- range $labelKey, $labelValue := $value.jobLabels }}
+            {{ $labelKey }}: {{$labelValue}}
+          {{- end }}
+        {{- end }}
         spec:
           {{- with $.Values.imagePullSecrets }}
           imagePullSecrets:
