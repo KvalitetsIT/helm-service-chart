@@ -1,0 +1,74 @@
+{{- if .Values.netpol.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "service.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  {{- if (.Values.netpol.ingress) }}
+  ingress:
+  {{- end }}
+  {{- range $key, $value := .Values.netpol.ingress }}
+  #  {{ $key }}
+  - from:
+    {{- if ($value.namespaceSelector) }}
+    - namespaceSelector:
+        matchLabels:
+    {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.namespaceSelector}}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+      {{- if ($value.podSelector) }}
+      podSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.podSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+    {{- if ($value.ipBlock) }}
+    - ipBlock:
+        cidr: {{ $value.ipBlock }}
+    {{- end }}
+    ports:
+      {{- range $netpolKey, $netpolValue := $value.ports }}
+      - protocol: {{$netpolValue}}
+        port: {{$netpolKey}}
+      {{- end }}
+  {{- end }}
+  {{- if (.Values.netpol.egress) }}
+  egress:
+  {{- end }}
+  {{- range $key, $value := .Values.netpol.egress }}
+  #  {{ $key }}
+  - to:
+      {{- if ($value.namespaceSelector) }}
+    - namespaceSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.namespaceSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+      {{- if ($value.podSelector) }}
+      podSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.podSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+    {{- if ($value.ipBlock) }}
+    - ipBlock:
+        cidr: {{ $value.ipBlock }}
+    {{- end }}
+    ports:
+      {{- range $netpolKey, $netpolValue := $value.ports }}
+      - protocol: {{$netpolValue}}
+        port: {{$netpolKey}}
+      {{- end }}
+  {{- end }}
+{{- end }}

@@ -114,6 +114,57 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+netpol:
+  enabled: true
+
+#  ingress:
+#    name1:
+#      namespaceSelector:
+#        label1: value1
+#        label2: value2
+#      podSelector:
+#        label1: value1
+#        label2: value2
+#      ports:
+#        80: TCP
+#        443: UDP
+#    name2:
+#      namespaceSelector:
+#        label12: value12
+#        label22: value22
+#      ports:
+#        80: TCP2
+#        443: UDP2
+#    name3:
+#      ipBlock: 10.10.10.10/24
+#      ports:
+#        80: TCP2
+#        443: UDP2
+#
+#  egress:
+#    name1:
+#      namespaceSelector:
+#        label1: value1
+#        label2: value2
+#      podSelector:
+#        label1: value1
+#        label2: value2
+#      ports:
+#        80: TCP
+#        443: UDP
+#    name2:
+#      namespaceSelector:
+#        label12: value12
+#        label22: value22
+#      ports:
+#        80: TCP2
+#        443: UDP2
+#    name3:
+#      ipBlock: 10.10.10.10/24
+#      ports:
+#        80: TCP2
+#        443: UDP2
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: false
