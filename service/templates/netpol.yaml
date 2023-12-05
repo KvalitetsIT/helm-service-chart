@@ -35,7 +35,9 @@ spec:
     - ipBlock:
         cidr: {{ $value.ipBlock }}
     {{- end }}
+    {{- if ($value.ports) }}
     ports:
+    {{- end }}
       {{- range $netpolKey, $netpolValue := $value.ports }}
       - protocol: {{$netpolValue}}
         port: {{$netpolKey}}
@@ -65,7 +67,9 @@ spec:
     - ipBlock:
         cidr: {{ $value.ipBlock }}
     {{- end }}
+    {{- if ($value.ports) }}
     ports:
+    {{- end }}
       {{- range $netpolKey, $netpolValue := $value.ports }}
       - protocol: {{$netpolValue}}
         port: {{$netpolKey}}
