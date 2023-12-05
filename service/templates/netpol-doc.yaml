@@ -1,0 +1,74 @@
+{{- if .Values.docDeployment.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "service.fullname" . }}-documentation
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "documentation.labels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  {{- if (.Values.docNetpol.ingress) }}
+  ingress:
+  {{- end }}
+  {{- range $key, $value := .Values.docNetpol.ingress }}
+  #  {{ $key }}
+  - from:
+    {{- if ($value.namespaceSelector) }}
+    - namespaceSelector:
+        matchLabels:
+    {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.namespaceSelector}}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+      {{- if ($value.podSelector) }}
+      podSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.podSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+    {{- if ($value.ipBlock) }}
+    - ipBlock:
+        cidr: {{ $value.ipBlock }}
+    {{- end }}
+    ports:
+      {{- range $netpolKey, $netpolValue := $value.ports }}
+      - protocol: {{$netpolValue}}
+        port: {{$netpolKey}}
+      {{- end }}
+  {{- end }}
+  {{- if (.Values.docNetpol.egress) }}
+  egress:
+  {{- end }}
+  {{- range $key, $value := .Values.docNetpol.egress }}
+  #  {{ $key }}
+  - to:
+      {{- if ($value.namespaceSelector) }}
+    - namespaceSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.namespaceSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+      {{- if ($value.podSelector) }}
+      podSelector:
+        matchLabels:
+      {{- end }}
+          {{- range $netpolKey, $netpolValue := $value.podSelector }}
+          {{$netpolKey}}: {{$netpolValue}}
+          {{- end }}
+    {{- if ($value.ipBlock) }}
+    - ipBlock:
+        cidr: {{ $value.ipBlock }}
+    {{- end }}
+    ports:
+      {{- range $netpolKey, $netpolValue := $value.ports }}
+      - protocol: {{$netpolValue}}
+        port: {{$netpolKey}}
+      {{- end }}
+  {{- end }}
+{{- end }}

@@ -114,6 +114,16 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+docNetpol:
+  ingress:
+    ingress:
+      namespaceSelector:
+        kubernetes.io/metadata.name: kube-system
+      podSelector:
+        app.kubernetes.io/instance: rke2-ingress-nginx
+      ports:
+        8080: TCP
+
 netpol:
   enabled: true
 
