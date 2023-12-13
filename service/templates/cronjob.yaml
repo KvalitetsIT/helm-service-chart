@@ -35,7 +35,7 @@ spec:
       template:
         metadata:
           labels:
-            cornjob-name:  {{ $value.nameOverwrite | default $name }}
+            cronjob-name:  {{ $value.nameOverwrite | default $name }}
           {{- range $labelKey, $labelValue := $value.jobLabels }}
             {{ $labelKey }}: {{$labelValue}}
           {{- end }}
