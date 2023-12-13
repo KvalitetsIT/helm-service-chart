@@ -6,7 +6,7 @@ metadata:
   name: {{ $name }}
   namespace: {{ $.Values.namespace | default "default" }}
   labels:
-    job-name: {{ $name }}
+    service-job-name: {{ $name }}
 spec:
   template:
     spec:

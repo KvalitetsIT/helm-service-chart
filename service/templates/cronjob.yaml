@@ -35,7 +35,7 @@ spec:
       template:
         metadata:
           labels:
-            job-name:  {{ $value.nameOverwrite | default $name }}
+            cornjob-name:  {{ $value.nameOverwrite | default $name }}
           {{- range $labelKey, $labelValue := $value.jobLabels }}
             {{ $labelKey }}: {{$labelValue}}
           {{- end }}
