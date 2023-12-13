@@ -26,9 +26,6 @@ spec:
       {{- if ($value.completions) }}
       completions: {{ $value.completions }}
       {{- end }}
-      {{- if ($value.backoffLimit) }}
-      backoffLimit: {{ $value.backoffLimit }}
-      {{- end }}
       {{- if ($value.activeDeadlineSeconds) }}
       activeDeadlineSeconds: {{ $value.activeDeadlineSeconds }}
       {{- end }}
@@ -43,6 +40,9 @@ spec:
           {{- with $.Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if ($value.backoffLimit) }}
+          backoffLimit: {{ $value.backoffLimit }}
           {{- end }}
           containers:
           - name: {{ $value.nameOverwrite | default $name }}
