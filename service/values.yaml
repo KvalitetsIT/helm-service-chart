@@ -115,6 +115,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 docNetpol:
+  enabled: true
   ingress:
     ingress:
       namespaceSelector:
@@ -126,6 +127,7 @@ docNetpol:
 
 netpol:
   enabled: true
+  allowLetsEncrypt: true
 
 #  ingress:
 #    name1:
