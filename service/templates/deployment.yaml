@@ -210,7 +210,7 @@ spec:
           ports:
             - name: container-port
               containerPort: {{ .Values.deployment.containerPort }}
-              {{- if (.Values.deployment.hostPort) }}}
+              {{- if (.Values.deployment.hostPort) }}
               hostPort: {{ .Values.deployment.hostPort }}
               {{- end }}
             {{- range $name, $port := .Values.deployment.extraContainerPort }}
