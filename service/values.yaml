@@ -24,6 +24,7 @@ deployment:
   containerPort: 80
 
   securityContext:
+    capabilitiesDropAll: true
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     runAsNonRoot: true

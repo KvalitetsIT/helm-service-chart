@@ -143,6 +143,7 @@ spec:
       {{- if .Values.deployment.enabled }}
         - name: {{ include "service.fullname" . }}
           securityContext:
+            {{- if .Values.deployment.capabilitiesDropAll }}
             capabilities:
               drop:
                 - ALL
@@ -150,6 +151,7 @@ spec:
               add:
                 {{- toYaml .Values.deployment.securityContextAddCapabilities | nindent 16 }}
               {{- end }}
+            {{- end }}
             readOnlyRootFilesystem: {{ .Values.deployment.securityContext.readOnlyRootFilesystem }}
             allowPrivilegeEscalation: {{ .Values.deployment.securityContext.allowPrivilegeEscalation }}
             runAsNonRoot: {{ .Values.deployment.securityContext.runAsNonRoot }}
