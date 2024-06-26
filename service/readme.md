@@ -52,6 +52,7 @@ Parameter | Description                                                         
 `deplyment.livenessProbe` | Set values under this to config liveness probe                                                                                                                                                                                                                                                 
 `deplyment.commands` | List of cronjob commands                                                                                                                                                                                                                                                                       | `- /bin/bash`
 `deplyment.args` | List of arguments to the commands                                                                                                                                                                                                                                                              |
+`deployment.priorityClassName` | Deployment priorityClassName |  |
 **Deployment - Environment variables** |
 `deployment.env` | Map of environment variables                                                                                                                                                                                                                                                                   
 `deployment.env.{name}` | Name of the environment variables                                                                                                                                                                                                                                                              
@@ -108,6 +109,7 @@ Parameter | Description                                                         
 `docDeployment.securityContext` | securityContext for containers                                                                                                                                                                                                                                                                 
 `docDeployment.readinessProbe` | Set values under this to config readiness probe                                                                                                                                                                                                                                                
 `docDeployment.livenessProbe` | Set values under this to config liveness probe                                                                                                                                                                                                                                                 
+`docDeployment.priorityClassName` | Deployment priorityClassName |  |
 **Documentation Ingress** |
 `docIngress.enabled` | Enables the ingress for the documentation                                                                                                                                                                                                                                                      | `true`
 `docIngress.annotations` | Annotations for documentation ingress                                                                                                                                                                                                                                                          | `kubernetes.io/ingress.class: nginx`
@@ -130,6 +132,7 @@ Parameter | Description                                                         
 `cronjob.{name}.commands` | List of cronjob commands                                                                                                                                                                                                                                                                       | `- /bin/bash`
 `cronjob.{name}.args` | List of arguments to the commands                                                                                                                                                                                                                                                              |
 `cronjob.{name}.restartPolicy` | Restartpolicy. Either `Always`, `OnFailure` or `Never`. Defaults to `OnFailure`                                                                                                                                                                                                                
+`cronjob.{name}.priorityClassName` | Cronjob priorityClassName |  |
 **Cronjob - Environment variables** |
 `cronjob.{name}.env` | Map of environment variables                                                                                                                                                                                                                                                                   
 `cronjob.{name}.env.{name}` | Name of the environment variables                                                                                                                                                                                                                                                              
@@ -553,6 +556,7 @@ Parameter | Description | Example
 `docDeployment.securityContext` | securityContext for containers
 `docDeployment.readinessProbe` | Set values under this to config readiness probe
 `docDeployment.livenessProbe` | Set values under this to config liveness probe
+`docDepl
 **Documentation Ingress** |
 `docIngress.enabled` | Enables the ingress for the documentation | `true`
 `docIngress.annotations` | Annotations for documentation ingress | `kubernetes.io/ingress.class: nginx`

@@ -41,6 +41,9 @@ spec:
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if ($.Values..priorityClassName) }}
+          priorityClassName: {{ $.Values.priorityClassName }}
+          {{- end }}
           {{- if ($value.backoffLimit) }}
           backoffLimit: {{ $value.backoffLimit }}
           {{- end }}

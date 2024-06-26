@@ -34,6 +34,9 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if (.Values.deployment.priorityClassName) }}
+      priorityClassName: {{ .Values.deployment.priorityClassName }}
+      {{- end }}
       serviceAccountName: {{ include "service.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       securityContext:
