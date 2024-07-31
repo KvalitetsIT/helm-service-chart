@@ -61,7 +61,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "service.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "service.name" . }}
+app.kubernetes.io/name: {{ .Release.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -69,7 +69,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Selector labels documentation
 */}}
 {{- define "documentation.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "service.name" . }}
+app.kubernetes.io/name: {{ .Release.Name }}-documentation
 app.kubernetes.io/instance: {{ .Release.Name }}-documentation
 {{- end }}
 
