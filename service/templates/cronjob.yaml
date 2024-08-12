@@ -108,6 +108,10 @@ spec:
               - mountPath: {{ $value.mountPath }}
                 name: {{ $key }}
             {{- end }}
+            {{- if ($value.resources)}}
+            resources:
+              {{- toYaml $value.resources | nindent 14 }}
+            {{- end }}
           restartPolicy: {{ $value.restartPolicy | default "OnFailure" }}
           {{- if ($value.terminationGracePeriodSeconds) }}
           terminationGracePeriodSeconds: {{ $value.terminationGracePeriodSeconds }}
