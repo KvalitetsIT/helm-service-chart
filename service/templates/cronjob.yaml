@@ -112,6 +112,26 @@ spec:
             resources:
               {{- toYaml $value.resources | nindent 14 }}
             {{- end }}
+            {{- if ($value.securityContext)}}
+            securityContext:
+              {{- if $value.securityContext.capabilitiesDropAll }}
+              capabilities:
+                drop:
+                  - ALL
+                {{- if ($value.securityContextAddCapabilities) }}
+                add:
+                  {{- toYaml $value.securityContextAddCapabilities | nindent 16 }}
+                {{- end }}
+              {{- end }}
+              readOnlyRootFilesystem: {{ $value.securityContext.readOnlyRootFilesystem }}
+              allowPrivilegeEscalation: {{ $value.securityContext.allowPrivilegeEscalation }}
+              runAsNonRoot: {{ $value.securityContext.runAsNonRoot }}
+              seccompProfile:
+                type: {{ $value.securityContext.seccompProfile }}
+              {{- if ($value.securityContext.extra) }}
+                {{- toYaml $value.securityContext.extra | nindent 14 }}
+              {{- end }}
+            {{- end }}
           restartPolicy: {{ $value.restartPolicy | default "OnFailure" }}
           {{- if ($value.terminationGracePeriodSeconds) }}
           terminationGracePeriodSeconds: {{ $value.terminationGracePeriodSeconds }}
