@@ -47,6 +47,16 @@ spec:
           {{- if ($value.backoffLimit) }}
           backoffLimit: {{ $value.backoffLimit }}
           {{- end }}
+          {{- if ($value.hostAliases) }}
+          hostAliases:
+            {{- range $ip , $hostnames := $value.hostAliases }}
+            - ip: {{ $ip }}
+              hostnames:
+              {{- range $hostnames }}
+                - {{ . }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
           containers:
           - name: {{ $value.nameOverwrite | default $name }}
             image: "{{ $value.image.repository }}:{{ $value.image.tag }}"

@@ -14,6 +14,16 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 6 }}
       {{- end }}
+      {{- if ($value.hostAliases) }}
+      hostAliases:
+        {{- range $ip , $hostnames := $value.hostAliases }}
+        - ip: {{ $ip }}
+          hostnames:
+          {{- range $hostnames }}
+            - {{ . }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
       containers:
       - name: {{ $name }}
         image: "{{ $value.image.repository }}:{{ $value.image.tag }}"
