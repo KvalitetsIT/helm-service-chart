@@ -8,6 +8,9 @@ metadata:
   namespace: {{ .Values.namespace | default "default" }}
   labels:
     {{- include "service.labels" . | nindent 4 }}
+    {{- if .Values.ingress.extraLabels }}
+    {{- toYaml .Values.ingress.extraLabels | nindent 4 }}
+    {{- end }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
