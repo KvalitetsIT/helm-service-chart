@@ -36,6 +36,9 @@ spec:
                 name: {{ .serviceName | default $fullName }}
                 port:
                   number: {{ .servicePort | default  $svcPort }}
+                  {{- if .portName }}
+                  name: {{ .portName }}
+                  {{- end -}}
           {{- end }}
     {{- end }}
   {{- end }}
