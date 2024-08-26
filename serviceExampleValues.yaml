@@ -12,6 +12,12 @@ image:
 
 serviceAccount:
   create: false
+  
+podAnnotations: 
+  DepAnnotation: 1
+
+podLabels: 
+  DepLabel: 1
 
 ingress:
   extraLabels:
@@ -321,7 +327,11 @@ extraDeployments:
           runAsNonRoot: true
           seccompProfile: RuntimeDefault
 
-      podAnnotations: {}
+      podAnnotations: 
+        extraDepAnnotation: 2
+      podLabels: 
+        extraDepLabel: 2
+
       podSecurityContext: {}
       nodeSelector: {}
       ## @param operator.podAffinityPreset Pod affinity preset
