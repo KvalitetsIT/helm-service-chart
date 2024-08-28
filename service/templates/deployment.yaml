@@ -302,6 +302,22 @@ spec:
             {{ $arg | quote }}
             {{- end }}
           ]
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+              {{- if ( $value.securityContextAddCapabilities) }}
+              add:
+                {{- toYaml $value.securityContextAddCapabilities | nindent 16 }}
+              {{- end }}
+            readOnlyRootFilesystem: {{ ($value.securityContext).readOnlyRootFilesystem  | default "true" }}
+            allowPrivilegeEscalation: {{ ($value.securityContext).allowPrivilegeEscalation | default "false" }}
+            runAsNonRoot: {{ ($value.securityContext).runAsNonRoot | default "true"}}
+            seccompProfile:
+              type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
+            {{- if (($value.securityContext).extra) }}
+            {{- toYaml $value.securityContext.extra | nindent 12 }}
+            {{- end }}
           {{- if ($value.resources)}}
           resources:
             {{- toYaml $value.resources | nindent 12 }}
