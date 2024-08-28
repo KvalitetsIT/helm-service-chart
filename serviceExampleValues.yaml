@@ -198,6 +198,8 @@ initContainers:
       - "-0"
       - "/work-dir/index.html"
       - http://kubernetes.io
+    securityContext:
+        runAsNonRoot: "false"
     configMapMountPaths:
       nginx-conf:
         configMapMountPath: /config/nginx.conf

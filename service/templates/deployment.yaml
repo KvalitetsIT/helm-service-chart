@@ -303,13 +303,6 @@ spec:
             {{- end }}
           ]
           securityContext:
-            capabilities:
-              drop:
-                - ALL
-              {{- if ( $value.securityContextAddCapabilities) }}
-              add:
-                {{- toYaml $value.securityContextAddCapabilities | nindent 16 }}
-              {{- end }}
             readOnlyRootFilesystem: {{ ($value.securityContext).readOnlyRootFilesystem  | default "true" }}
             allowPrivilegeEscalation: {{ ($value.securityContext).allowPrivilegeEscalation | default "false" }}
             runAsNonRoot: {{ ($value.securityContext).runAsNonRoot | default "true"}}
