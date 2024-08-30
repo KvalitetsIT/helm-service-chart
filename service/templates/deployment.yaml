@@ -70,6 +70,8 @@ spec:
             readOnlyRootFilesystem: {{ .Values.sidecar.securityContext.readOnlyRootFilesystem }}
             allowPrivilegeEscalation: {{ .Values.sidecar.securityContext.allowPrivilegeEscalation }}
             runAsNonRoot: {{ .Values.sidecar.securityContext.runAsNonRoot }}
+            appArmorProfile:
+              type: {{ .Values.sidecar.securityContext.appArmorProfile }}
             seccompProfile:
               type: {{ .Values.sidecar.securityContext.seccompProfile }}
             {{- if (.Values.sidecar.securityContext.extra) }}
@@ -161,6 +163,8 @@ spec:
             readOnlyRootFilesystem: {{ .Values.deployment.securityContext.readOnlyRootFilesystem }}
             allowPrivilegeEscalation: {{ .Values.deployment.securityContext.allowPrivilegeEscalation }}
             runAsNonRoot: {{ .Values.deployment.securityContext.runAsNonRoot }}
+            appArmorProfile:
+              type: {{ .Values.deployment.securityContext.appArmorProfile }}
             seccompProfile:
               type: {{ .Values.deployment.securityContext.seccompProfile }}
             {{- if (.Values.deployment.securityContext.extra) }}
@@ -306,6 +310,8 @@ spec:
             readOnlyRootFilesystem: {{ ($value.securityContext).readOnlyRootFilesystem  | default "true" }}
             allowPrivilegeEscalation: {{ ($value.securityContext).allowPrivilegeEscalation | default "false" }}
             runAsNonRoot: {{ ($value.securityContext).runAsNonRoot | default "true"}}
+            appArmorProfile:
+              type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
             seccompProfile:
               type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
             {{- if (($value.securityContext).extra) }}
