@@ -8,8 +8,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ $name }}
-  {{- if ($values.namespace) }}
-  namespace: {{ $values.namespace  }}
+  {{- if ($value.namespace) }}
+  namespace: {{ $value.namespace  }}
   {{- end }}
 spec:
   secretName: {{ $value.spec.secretName }}
