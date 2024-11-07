@@ -4,7 +4,9 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ $value.nameOverwrite | default $name }}
-  namespace: {{ $.Values.namespace | default "default" }}
+  {{- if ($.Values.namespace) }}
+  namespace: {{ $.Values.namespace  }}
+  {{- end }}
 spec:
   schedule: {{ required "Required value missing: 'schedule'" $value.schedule | quote }}
   concurrencyPolicy: {{ $value.concurrencyPolicy | default "Forbid"}}

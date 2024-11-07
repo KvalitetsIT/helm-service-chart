@@ -6,7 +6,9 @@ metadata:
     {{- include "service.labels" . | nindent 4 }}
     release: {{ .Values.serviceMonitor.release | default "prometheus" }}
   name: {{ include "service.fullname" . }}
-  namespace: {{ .Values.namespace | default "default" }}
+  {{- if (.Values.namespace) }}
+  namespace: {{ .Values.namespace  }}
+  {{- end }}
 spec:
   endpoints:
     - metricRelabelings:

@@ -4,7 +4,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ $name }}
-  namespace: {{ $.Values.namespace | default "default" }}
+  {{- if ($.Values.namespace) }}
+  namespace: {{ $.Values.namespace  }}
+  {{- end }}
   labels:
     service-job-name: {{ $name }}
 spec:

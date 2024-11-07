@@ -5,7 +5,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}-documentation
-  namespace: {{ .Values.namespace | default "default" }}
+  {{- if (.Values.namespace) }}
+  namespace: {{ .Values.namespace  }}
+  {{- end }}
   labels:
     {{- include "documentation.labels" . | nindent 4 }}
   {{- with .Values.docIngress.annotations }}

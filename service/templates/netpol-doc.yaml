@@ -3,7 +3,9 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: {{ include "service.fullname" . }}-documentation
-  namespace: {{ .Values.namespace | default "default" }}
+  {{- if (.Values.namespace) }}
+  namespace: {{ .Values.namespace  }}
+  {{- end }}
 spec:
   podSelector:
     matchLabels:

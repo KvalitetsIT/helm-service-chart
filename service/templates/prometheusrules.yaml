@@ -3,7 +3,9 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: {{ include "service.fullname" . }}
-  namespace: {{ .Values.namespace | default "default" }}
+  {{- if (.Values.namespace) }}
+  namespace: {{ .Values.namespace  }}
+  {{- end }}
   labels:
     {{- include "service.labels" . | nindent 4 }}
     release: {{ .Values.prometheusRules.release | default "prometheus" }}

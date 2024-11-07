@@ -3,7 +3,9 @@ apiVersion: apps/v1
 kind: {{ .Values.deployment.kind | default "Deployment" }}
 metadata:
   name: {{ include "service.fullname" . }}
-  namespace: {{ .Values.namespace | default "default" }}
+  {{- if (.Values.namespace) }}
+  namespace: {{ .Values.namespace  }}
+  {{- end }}
   labels:
     {{- include "service.labels" . | nindent 4 }}
 spec:

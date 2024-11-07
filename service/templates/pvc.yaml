@@ -4,7 +4,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ $name }}
-  namespace: {{ $value.namespace }}
+  {{- if ($value.namespace) }}
+  namespace: {{ $value.namespace  }}
+  {{- end }}
 spec:
   accessModes:
     - {{$value.accessMode | default "ReadWriteOnce" }}
