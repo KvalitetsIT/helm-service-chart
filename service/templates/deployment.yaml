@@ -314,7 +314,7 @@ spec:
             allowPrivilegeEscalation: {{ ($value.securityContext).allowPrivilegeEscalation | default "false" }}
             runAsNonRoot: {{ ($value.securityContext).runAsNonRoot | default "true"}}
             appArmorProfile:
-              type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
+              type: {{ ($value.securityContext).appArmorProfile | default "RuntimeDefault" }}
             seccompProfile:
               type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
             {{- if (($value.securityContext).extra) }}
