@@ -287,6 +287,8 @@ certificate:
 
 sealedSecret:
   Mariadb:
+    annotations:
+      jens.bitnami.com/cluster-wide: "true"
     encryptedData:
       username: username-encrypted
       pasword: password-encrypted
