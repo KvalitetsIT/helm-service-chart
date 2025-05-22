@@ -39,6 +39,10 @@ spec:
             {{ $labelKey }}: {{$labelValue}}
           {{- end }}
         spec:
+          {{- if $value.affinity }}
+          affinity:
+            {{- toYaml $value.affinity | nindent 12 }}
+          {{- end }}
           {{- with $.Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}

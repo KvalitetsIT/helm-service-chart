@@ -19,6 +19,77 @@ podAnnotations:
 podLabels: 
   DepLabel: 1
 
+
+cronjob:
+  kih-data-extract:
+    jobLabels:
+      app.kubernetes.io/instance: kih-dgwsxdsvalidationproxy-iti41
+    image:
+      repository: kvalitetsit/kih-data-extract
+      tag: 1.2.4
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: backup/deployment-name
+                operator: In
+                values:
+                  - vdx-pexip-status
+            namespaces:
+              - vdx
+            topologyKey: kubernetes.io/hostname
+    restartPolicy: Never
+    backoffLimit: 1
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 1
+        memory: 1Gi
+    env:
+      GENERATE_DATA_FOR: 
+        value: yesterday
+      INTEGRATION_TEST_SFTP_PASSWORD: 
+        type: secretKeyRef
+        name: kih-data-extract
+        key: sftp_password
+      SFTP_PASSWORD: 
+        type: secretKeyRef
+        name: kih-data-extract
+        key: sftp_password
+      SFTP_HOST: 
+        value: statistik.medcom.dk
+      SFTP_USERNAME: 
+        value: kvalitetsit
+      SFTP_FILE_PATH: 
+        value: /folder/test
+      SFTP_PORT: 
+        value: 22
+      INTEGRATION_TEST_SFTP_HOST: 
+        value: statistik.medcom.dk
+      INTEGRATION_TEST_SFTP_USERNAME: 
+        value: kvalitetsit
+      INTEGRATION_TEST_SFTP_FILE_PATH: 
+        value: /folder/test
+      INTEGRATION_TEST_SFTP_PORT: 
+        value: 22
+    suspend: true
+    schedule: "0 2 * * *"
+    extraVolumeMounts:
+      input:
+        mountPath: /input
+      output:
+        mountPath: /output
+    extraVolumes:
+      input: |
+        persistentVolumeClaim: 
+          claimName: kih-iti41-logs   
+      output: |
+        persistentVolumeClaim: 
+          claimName: kih-data-extract    
+
 ingress:
   extraLabels:
     netic.dk/network-ingress: "contour"
