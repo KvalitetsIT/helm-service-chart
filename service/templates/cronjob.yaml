@@ -163,7 +163,7 @@ spec:
           {{- if ($value.terminationGracePeriodSeconds) }}
           terminationGracePeriodSeconds: {{ $value.terminationGracePeriodSeconds }}
           {{- end }}
-          {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
+          {{- if or ($value.configMapMountPaths) ($value.extraVolumes) ($value.extraVolumesList) }}
           volumes:
             - name: configmap
               configMap:
