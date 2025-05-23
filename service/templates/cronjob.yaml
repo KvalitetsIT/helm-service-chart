@@ -116,9 +116,14 @@ spec:
               {{- end }}
             ]
             {{- end }}
-            {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
+            {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) ($value.extraVolumeMountsList) }}
             volumeMounts:
             {{- end }}
+            
+            {{- if $value.extraVolumeMountsList}}
+            {{- toYaml $value.extraVolumeMountsList | nindent 14 }}
+            {{- end }}
+
             {{- range $key, $value := $value.configMapMountPaths }}
               - mountPath: {{ $value.configMapMountPath }}
                 name: configmap
@@ -163,8 +168,12 @@ spec:
             - name: configmap
               configMap:
                 name: {{ include "service.fullname" $ }}-config
-          {{- end }}
+          {{- end }}          
+          {{- if $value.extraVolumesList}}
+          {{- toYaml $value.extraVolumesList | nindent 12 }}
+          {{- end }}          
           {{- range $key, $value := $value.extraVolumes }}
+          {{- $parsed := fromYaml $value }}
             - name: {{$key}}
               {{- tpl . $ | nindent 14 -}}
           {{- end }}

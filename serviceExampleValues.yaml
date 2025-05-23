@@ -83,17 +83,31 @@ cronjob:
         value: 22
     suspend: true
     schedule: "0 2 * * *"
+    extraVolumeMountsList:
+      - name: jensjens
+        mountPath: /input
+      - name: jensjens
+        mountPath: /output
     extraVolumeMounts:
       input:
         mountPath: /input
       output:
         mountPath: /output
-    extraVolumes:
-      input: |
+    extraVolumesList:
+      - name: jensjens
+        persistentVolumeClaim:
+          claimName: kih-iti41-logs
+          readOnly: true
+      - name: output
         persistentVolumeClaim: 
+          claimName: kih-data-extract 
+    extraVolumes:
+      input2: |
+        name: jensjens
+        persistentVolumeClaim:
           claimName: kih-iti41-logs   
           readOnly: true
-      output: |
+      output2: |
         persistentVolumeClaim: 
           claimName: kih-data-extract    
 
