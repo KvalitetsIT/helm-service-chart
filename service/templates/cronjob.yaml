@@ -173,7 +173,6 @@ spec:
           {{- toYaml $value.extraVolumesList | nindent 12 }}
           {{- end }}          
           {{- range $key, $value := $value.extraVolumes }}
-          {{- $parsed := fromYaml $value }}
             - name: {{$key}}
               {{- tpl . $ | nindent 14 -}}
           {{- end }}
