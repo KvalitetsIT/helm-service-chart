@@ -98,18 +98,23 @@ spec:
             {{- end }}
             {{- end }}
             {{- end }}
+            
+            {{- if or $value.commands }}
             command: [
               {{- range $index, $cmd := $value.commands }}
               {{- if $index }},{{- end }}
               {{ $cmd | quote }}
               {{- end }}
             ]
+            {{- end }}
+            {{- if or $value.args }}
             args: [
               {{- range $index, $arg := $value.args }}
               {{- if $index }},{{- end }}
               {{ $arg | quote }}
               {{- end }}
             ]
+            {{- end }}
             {{- if or ($value.configMapMountPaths) ($value.extraVolumeMounts) }}
             volumeMounts:
             {{- end }}

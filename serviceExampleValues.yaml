@@ -41,6 +41,12 @@ cronjob:
             topologyKey: kubernetes.io/hostname
     restartPolicy: Never
     backoffLimit: 1
+    commands:
+      - /bin/sh
+      - -c
+      - |
+        echo "Running cronjob"
+        sleep 10
     resources:
       limits:
         cpu: 1
@@ -86,6 +92,7 @@ cronjob:
       input: |
         persistentVolumeClaim: 
           claimName: kih-iti41-logs   
+          readOnly: true
       output: |
         persistentVolumeClaim: 
           claimName: kih-data-extract    
