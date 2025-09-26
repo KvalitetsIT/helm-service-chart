@@ -200,7 +200,7 @@ service:
   enabled: true
   type: ClusterIP
   port: 80
-  targetPort: proxy-port
+  targetPort: container-port
   annotations: {}
 
 docService:
