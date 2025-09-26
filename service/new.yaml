@@ -1,0 +1,737 @@
+---
+# Source: service/templates/netpol.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vdx-pexip-status
+  namespace: vdx
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: asd
+      app.kubernetes.io/instance: asd
+  policyTypes:
+    - Ingress
+    - Egress
+---
+# Source: service/templates/netpol.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vdx-pexip-status-lets-encrypt
+  namespace: vdx
+spec:
+  podSelector:
+    matchLabels:
+      acme.cert-manager.io/http01-solver: 'true'
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+      ports:
+        - port: 8089
+          protocol: TCP
+---
+# Source: service/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vdx-pexip-status-config
+  namespace: vdx
+data:
+  organization.json: |
+    [{"organization":"region-h","organizationId":10,"secretKeyLocation":"/key/key.txt"},{"organization":"region-sj","organizationId":20,"secretKeyLocation":"/key/key.txt"},{"organization":"medcom","organizationId":"medcom","secretKeyLocation":"/key/key.txt"}]
+  nginx.conf: |
+    events {}
+    http {
+    
+    # Upstream servers
+    upstream pexip_vdx {
+    
+        ip_hash;
+    
+        server 185.29.78.131:443 weight=1 max_fails=0;
+    
+        server 185.29.78.132:443 weight=1 max_fails=0;
+    
+        server 185.29.78.133:443 weight=1 max_fails=0;
+    
+        server 185.29.78.134:443 weight=1 max_fails=0;
+    
+        server 185.29.78.135:443 weight=1 max_fails=0;
+    
+        server 185.29.78.136:443 weight=1 max_fails=0;
+    
+        keepalive 1024;
+    }
+---
+# Source: service/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vdx-pexip-status
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    prometheus.io/path: /manage/actuator/appmetrics
+    prometheus.io/port: "8081"
+    prometheus.io/scrape: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: proxy-port
+      protocol: TCP
+      name: http
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: test
+  selector:
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+---
+# Source: service/templates/extraDeployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vdx-pexip-status-consumer
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: service-consumer
+    app.kubernetes.io/instance: asd-consumer
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: service-consumer
+      app.kubernetes.io/instance: asd-consumer
+  template:
+    metadata:
+      annotations:
+        checksum/config: 1bd521b4fd3a40eab61a20496f5ce244b52cc52c71b413f8a23ca0a5b04bc669
+        extraDepAnnotation: 2
+      labels:
+        app.kubernetes.io/name: service-consumer
+        app.kubernetes.io/instance: asd-consumer
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        {}
+      containers:
+        - name: vdx-pexip-status
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          image: "service-consumer-image:1.1.0"
+          imagePullPolicy: IfNotPresent
+          env: 
+          - name: VAR
+            value: "hejsa"
+          ports:
+            - name: container-port
+              containerPort: 80
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+
+          resources:
+            {}
+
+      volumes:
+        - emptyDir: {}
+          name: tmp
+        - configMap:
+            name: vdx-pexip-statusconsumer-config
+          name: configmap
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: service-consumer
+                    app.kubernetes.io/instance: asd-consumer
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+---
+# Source: service/templates/deployment.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vdx-pexip-status
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: asd
+      app.kubernetes.io/instance: asd
+  template:
+    metadata:
+      annotations:
+        checksum/config: 1bd521b4fd3a40eab61a20496f5ce244b52cc52c71b413f8a23ca0a5b04bc669
+        DepAnnotation: 1
+      labels:
+        app.kubernetes.io/name: asd
+        app.kubernetes.io/instance: asd
+        DepLabel: 1
+    spec:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      securityContext:
+        {}
+      hostAliases:
+        - ip: 10.1.2.3
+          hostnames:
+            - foo.remote
+            - bar.remote
+        - ip: 127.0.0.1
+          hostnames:
+            - foo.local
+            - bar.local
+      containers:
+        - name: vdx-pexip-status
+          securityContext:
+            allowPrivilegeEscalation: false
+            appArmorProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          image: "kvalitetsit/medcom-pexip-status-core:1.1.0"
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: PEXIPAPIPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: pexip-api
+          - name: PEXIPAPIUSERNAME
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: pexip-api
+          - name: SQLPASS
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: statisticsdb
+          - name: SQLUSER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: statisticsdb
+          - name: START_CONFSYSCOLL
+            value: "false"
+          - name: START_LICSTATCOLL
+            value: "false"
+          args: [
+            "-test1",
+            "-test2"
+          ]
+          ports:
+            - name: container-port
+              containerPort: 80
+            - name: test1
+              containerPort: 23
+            - name: test2
+              containerPort: 243
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /config/nginx.conf
+              name: configmap
+              subPath: nginx.conf
+            - mountPath: /config/test2.conf
+              name: configmap
+              subPath: test2.conf
+            - mountPath: /dir
+              
+              
+              name: myEmptyDir
+            - mountPath: /dir
+              
+              
+              name: myEmptyDirSubPath
+              subPath: subPath
+            - mountPath: /dir1
+              
+              
+              name: myEmptyDir
+            - mountPath: /dir2
+              
+              
+              name: myEmptyDir
+            - mountPath: /ro-dir
+              
+              
+              name: myReadOnlyDir
+              readOnly: true
+
+          resources:
+            CPU: 123
+      initContainers:
+        - name: test
+          image: "kvalitetsit/init:1.1.0"
+          env: 
+            - name: SQLPASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: statisticsdb
+            - name: START_CONFSYSCOLL
+              value: "false"
+          command: [
+            "wget",
+            "-0",
+            "/work-dir/index.html",
+            "http://kubernetes.io"
+          ]
+          args: [
+            "-test1",
+            "-test2"
+          ]
+          securityContext:
+            runAsNonRoot: "false"
+          volumeMounts:
+            - mountPath: /config/nginx.conf
+              name: configmap
+              subPath: nginx.conf
+            - mountPath: /dir
+              
+              
+              name: myEmptyDir
+            - mountPath: /dir
+              
+              
+              name: myEmptyDirSubPath
+              subPath: subPath1
+            - mountPath: /dir/otherPath
+              
+              
+              name: myEmptyDirSubPath
+              subPath: subPath2
+
+      volumes:
+        - emptyDir: {}
+          name: tmp
+        - configMap:
+            name: vdx-pexip-status-config
+          name: configmap
+        - name: myEmptyDir
+          emtpyDir: {}
+          
+        - name: myEmptyDirSubPath
+          emtpyDir: {}
+          
+        - name: myReadOnlyDir
+          emtpyDir: {}
+          
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: asd
+                    app.kubernetes.io/instance: asd
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+---
+# Source: service/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kih-data-extract
+  namespace: vdx
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  suspend: true
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            cronjob-name:  kih-data-extract
+            app.kubernetes.io/instance: kih-dgwsxdsvalidationproxy-iti41
+        spec:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: backup/deployment-name
+                    operator: In
+                    values:
+                    - vdx-pexip-status
+                namespaces:
+                - vdx
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - name: kih-data-extract
+            image: "kvalitetsit/kih-data-extract:1.2.4"
+            imagePullPolicy: IfNotPresent
+            env: 
+            - name: GENERATE_DATA_FOR
+              value: "yesterday"
+            - name: INTEGRATION_TEST_SFTP_FILE_PATH
+              value: "/folder/test"
+            - name: INTEGRATION_TEST_SFTP_HOST
+              value: "statistik.medcom.dk"
+            - name: INTEGRATION_TEST_SFTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: sftp_password
+                  name: kih-data-extract
+            - name: INTEGRATION_TEST_SFTP_PORT
+              value: "22"
+            - name: INTEGRATION_TEST_SFTP_USERNAME
+              value: "kvalitetsit"
+            - name: SFTP_FILE_PATH
+              value: "/folder/test"
+            - name: SFTP_HOST
+              value: "statistik.medcom.dk"
+            - name: SFTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: sftp_password
+                  name: kih-data-extract
+            - name: SFTP_PORT
+              value: "22"
+            - name: SFTP_USERNAME
+              value: "kvalitetsit"
+            command: [
+              "/bin/sh",
+              "-c",
+              "echo \"Running cronjob\"\nsleep 10\n"
+            ]
+            volumeMounts:
+              - mountPath: /input
+                name: jensjens
+              - mountPath: /output
+                name: jensjens
+              - mountPath: /input
+                name: input
+              - mountPath: /output
+                name: output
+            resources:
+              limits:
+                cpu: 1
+                memory: 1Gi
+              requests:
+                cpu: 1
+                memory: 1Gi
+          restartPolicy: Never
+          volumes:
+            - name: configmap
+              configMap:
+                name: vdx-pexip-status-config
+            - name: jensjens
+              persistentVolumeClaim:
+                claimName: kih-iti41-logs
+                readOnly: true
+            - name: output
+              persistentVolumeClaim:
+                claimName: kih-data-extract
+            - name: input2
+              name: jensjens
+              persistentVolumeClaim:
+                claimName: kih-iti41-logs   
+                readOnly: true
+              
+            - name: output2
+              persistentVolumeClaim: 
+                claimName: kih-data-extract
+---
+# Source: service/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vdx-pexip-status
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+    netic.dk/network-ingress: contour
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-snippet: |
+      proxy_set_header forwarded-from-nginx $ssl_client_escaped_cert;
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: true
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: optional_no_ca
+    nginx.ingress.kubernetes.io/auth-url: http://testserviceaa:8787/
+spec:
+  tls:
+    - hosts:
+        - "vdxapi.dk"
+      secretName: star.vdxapi.dk
+  rules:
+    - host: "pexip-sink.vdxapi.dk"
+      http:
+        paths:
+          - path: /history
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port:
+                  number: 8080
+    - host: "pexip-sink.vdxapi.dk"
+      http:
+        paths:
+          - path: /test
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port:
+                  name: http
+                  
+          - path: /test2
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port:
+                  number: 8080
+#extra ingress
+---
+# Source: service/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vdx-pexip-status-internalOnly
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    ingress.kubernetes.io/whitelist-source-range: 1.1.1.1/24
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+    - hosts:
+        - "booking.vconf-stage.dk"
+      secretName: booking.vconf-stage.dk
+  rules:
+    - host: "booking.vconf-stage.dk"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port: 
+                  number: 7070
+          - path: /getsessiondata
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port: 
+                  number: 8080
+#extra ingress
+---
+# Source: service/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vdx-pexip-status-internalOnlyNoTls
+  namespace: vdx
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    ingress.kubernetes.io/whitelist-source-range: 1.1.1.1/24
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: "booking.vconf-stage.dk"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port: 
+                  number: 7070
+          - path: /getsessiondata
+            pathType: Prefix
+            backend:
+              service:
+                name: vdx-pexip-status
+                port: 
+                  number: 8080
+---
+# Source: service/templates/certificate.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: urlhandler.vconf-stage.dk
+  namespace: vdx
+spec:
+  secretName: urlhandler.vconf-stage.dk
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - urlhandler.vconf-stage.dk
+---
+# Source: service/templates/certificate.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: vdx-urlhandler
+  namespace: vdx
+spec:
+  secretName: urlhandler-client-cert
+  duration: 87600h
+  renewBefore: 24h
+  commonName: vdx-urlhandler
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: service/templates/sealedsecret.yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: Mariadb
+  namespace: vdx
+spec:
+  encryptedData:
+    
+    pasword: password-encrypted
+    username: username-encrypted
+  template:
+    data:
+    metadata:
+      creationTimestamp: null
+      name: Mariadb
+      namespace: vdx
+      annotations:
+        jens.bitnami.com/cluster-wide: "true"
+    type: Opaque
+---
+# Source: service/templates/sealedsecret.yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: OtherSecret
+  namespace: vdx
+spec:
+  encryptedData:
+    
+    key: AgBOQOoh7RGqTBPPSG0CtbfZD/Wh+Csl/c5HSqTzy2SoRBxh9nE4Ud4QqEAO1+S1e5VvZw2+ycpxB/272M1uxweHzzPwozFFJ6YI1zu6oG4WETU9CFCk0MBR8TOj7ng1ccR4MNJB1vJmtfkuCXrd6UDs4gYYGo+xaCHNfsVTkpVhpLrQiv/FVpfeutCOYXtTOGJ6M2a6eF7HpUijARmyIiM+nGGzjaiT4BvDE522eV1qId205WH/tti5Kgl+4iH4djZo0TG92+r3k1HcFEk3vQojTA62LFy6djmPJqreSOSEIDngSsbxhasmory0J2ehDdshCGCyaHEu3QtJ7P07WVjgwGX+G9IYrGW3tqQUohWO9+uZUOPB0Mq+K0850QeA5OfkfggOX+L6GiLR10E5JZ94Ke7QU5D0uT3IDYMkwIREUP6f3ZwLJOz4YgX4cl5tTsUOVIAFXcZsMyKXoroXmqxeoCMaam8taO+F8geEyOxqMEm3XDVxKXATfOdFIgk59to7rRNCI29pNaPdiDhX9t71ur1CRvcLqU5FYq6EZkL0Ivinj6XUsfQGXznV/8k+LfzhOmoSPtxBO4xPgcBAKHeUTokuXjnayPNSg96Goxr/v9i5FmdxcqITIsnD30XSXDFylBZ3CV
+  template:
+    data:
+      config.json: |
+        {
+          "foo": "bar",
+          "encrypted": "{{ index . "key" }}",
+        }
+      key1: "-"
+      key2: 123
+      key3: "hello"
+      key4: true
+      plaintext: "somevalue"
+    metadata:
+      creationTimestamp: null
+      name: OtherSecret
+      namespace: vdx
+    type: Opaque
+---
+# Source: service/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    helm.sh/chart: service-0.1.3
+    app: asd
+    app.kubernetes.io/name: asd
+    app.kubernetes.io/instance: asd
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+    release: prometheus
+  name: vdx-pexip-status
+  namespace: vdx
+spec:
+  endpoints:
+    - metricRelabelings:
+        - action: replace
+          sourceLabels:
+            - service
+          targetLabel: instance
+      path: /metrics
+      scheme: http
+      targetPort: 80
+      interval: 5s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: asd
+      app.kubernetes.io/instance: asd
