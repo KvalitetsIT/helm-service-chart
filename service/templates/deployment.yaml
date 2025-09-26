@@ -292,16 +292,11 @@ spec:
             {{- end }}
           ]
           securityContext:
-            readOnlyRootFilesystem: {{ ($value.securityContext).readOnlyRootFilesystem  | default "true" }}
-            allowPrivilegeEscalation: {{ ($value.securityContext).allowPrivilegeEscalation | default "false" }}
-            runAsNonRoot: {{ ($value.securityContext).runAsNonRoot | default "true"}}
-            appArmorProfile:
-              type: {{ ($value.securityContext).appArmorProfile | default "RuntimeDefault" }}
-            seccompProfile:
-              type: {{ ($value.securityContext).seccompProfile | default "RuntimeDefault" }}
-            {{- if (($value.securityContext).extra) }}
-            {{- toYaml $value.securityContext.extra | nindent 12 }}
-            {{- end }}
+          {{- if $value.securityContext }}
+            {{- toYaml $value.securityContext | nindent 12 }}
+          {{- else }}
+            {{- toYaml .Values.deployment.securityContext | nindent 12 }}
+          {{- end }}
           {{- if ($value.resources)}}
           resources:
             {{- toYaml $value.resources | nindent 12 }}
