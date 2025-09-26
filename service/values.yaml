@@ -24,12 +24,16 @@ deployment:
   containerPort: 80
 
   securityContext:
-    capabilitiesDropAll: true
+    capabilities:
+      drop:
+        - ALL
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     runAsNonRoot: true
-    seccompProfile: RuntimeDefault
-    appArmorProfile: RuntimeDefault
+    appArmorProfile:
+      type: RuntimeDefault
+    seccompProfile:
+      type: RuntimeDefault    
 
   resources: {}
 
