@@ -212,6 +212,7 @@ docService:
 
 ingress:
   enabled: true
+  ingressClassName: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
@@ -225,6 +226,7 @@ ingress:
 
 docIngress:
   enabled: false
+  ingressClassName: ""
 
 autoscaling:
   enabled: false
