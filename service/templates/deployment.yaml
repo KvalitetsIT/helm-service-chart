@@ -231,7 +231,6 @@ spec:
             {{- range $name, $port := .Values.deployment.extraContainerPort }}
             - name: {{ $name }}
               containerPort: {{ $port }}
-              protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
           volumeMounts:
             - mountPath: /tmp
