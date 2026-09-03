@@ -235,6 +235,9 @@ deployment:
   extraContainerPort:
     test1: 23
     test2: 243
+    test3:
+      port: 53
+      protocol: UDP
 
 
   args:
@@ -412,6 +415,11 @@ extraDeployments:
       deployment:
         kind: Deployment
         containerPort: 80
+        extraContainerPort:
+          metrics: 8081
+          dns-udp:
+            port: 53
+            protocol: UDP
         resources: {}
         env:
           VAR:

@@ -123,7 +123,12 @@ spec:
               containerPort: {{ .deployment.containerPort }}
             {{- range $name, $port := .deployment.extraContainerPort }}
             - name: {{ $name }}
+              {{- if kindIs "map" $port }}
+              containerPort: {{ $port.port }}
+              protocol: {{ $port.protocol | default "TCP" }}
+              {{- else }}
               containerPort: {{ $port }}
+              {{- end }}
             {{- end }}
           volumeMounts:
             - mountPath: /tmp
